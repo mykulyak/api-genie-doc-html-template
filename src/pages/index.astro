@@ -1,0 +1,907 @@
+---
+import Header from "../components/Header.astro";
+import Operation from "../components/Operation.astro";
+import Overview from "../components/Overview.astro";
+import Tag from "../components/Tag.astro";
+import Resource from "../components/Resource.astro";
+import Layout from "../layouts/Layout.astro";
+import OperationItem from "../components/sidebar/OperationItem.astro";
+import OperationItemGroup from "../components/sidebar/OperationItemGroup.astro";
+import ResourceItem from "../components/sidebar/ResourceItem.astro";
+import Sidebar from "../components/Sidebar.astro";
+import Server from "../components/overview/Server.astro";
+import Parameter from "../components/operation/Parameter.astro";
+import Responses from "../components/operation/Responses.astro";
+import Response from "../components/operation/Response.astro";
+import Property from "../components/schema/Property.astro";
+import RequestBody from "../components/operation/RequestBody.astro";
+import RequestExample from "../components/RequestExample.astro";
+import CodeBlock from "../components/code/CodeBlock.astro";
+import ResponseExamples from "../components/ResponseExamples.astro";
+---
+
+<Layout title="Index">
+  <Header slot="header" />
+
+  <Sidebar slot="sidebar">
+    <OperationItemGroup summary="Articles" slot="operations">
+      <OperationItem
+        method="get"
+        url="#operation_articles_get"
+        summary="Get recent articles globally"
+      />
+      <OperationItem
+        method="post"
+        url="#operation_articles_post"
+        summary="Create an article"
+      />
+      <OperationItem
+        method="get"
+        url="#operation_article_get"
+        summary="Get an article"
+      />
+      <OperationItem
+        method="put"
+        url="#operation_article_update"
+        summary="Update an article"
+      />
+      <OperationItem
+        method="delete"
+        url="#operation_article_delete"
+        summary="Delete an article"
+      />
+      <OperationItem
+        method="get"
+        url="#operation_article_feed"
+        summary="Get recent articles from users you follow"
+      />
+    </OperationItemGroup>
+    <OperationItemGroup summary="Comments" slot="operations">
+      <OperationItem
+        method="get"
+        url="#operation_comments_get"
+        summary="Get comments for an article"
+      />
+      <OperationItem
+        method="post"
+        url="#operation_comment_create"
+        summary="Create a comment"
+      />
+      <OperationItem
+        method="delete"
+        url="#operation_comment_delete"
+        summary="Delete a comment"
+      />
+    </OperationItemGroup>
+    <OperationItemGroup summary="Favorite" slot="operations">
+      <OperationItem
+        method="post"
+        url="#operation_article_favorite"
+        summary="Favorite an article"
+      />
+      <OperationItem
+        method="delete"
+        url="#operation_article_unfavorite"
+        summary="Unfavorite an article"
+      />
+    </OperationItemGroup>
+    <OperationItemGroup summary="Profiles" slot="operations">
+      <OperationItem
+        method="get"
+        url="#operation_profile_get"
+        summary="Get a profile"
+      />
+      <OperationItem
+        method="post"
+        url="#operation_profile_follow"
+        summary="Follow a user"
+      />
+      <OperationItem
+        method="delete"
+        url="#operation_profile_unfollow"
+        summary="Unfollow a user"
+      />
+    </OperationItemGroup>
+    <OperationItemGroup summary="Tags" slot="operations">
+      <OperationItem
+        method="get"
+        url="#operation_tag_list"
+        summary="Get tags"
+      />
+    </OperationItemGroup>
+    <OperationItemGroup summary="User and Authentication" slot="operations">
+      <OperationItem
+        method="post"
+        url="#operation_user_register"
+        summary="Register a user"
+      />
+      <OperationItem
+        method="post"
+        url="#operation_user_login"
+        summary="Login a user"
+      />
+      <OperationItem
+        method="get"
+        url="#operation_current_user_get"
+        summary="Get current user"
+      />
+      <OperationItem
+        method="put"
+        url="#operation_current_user_update"
+        summary="Update current user"
+      />
+    </OperationItemGroup>
+
+    <ResourceItem title="Article" url="#resource_article" slot="resource" />
+    <ResourceItem title="Comment" url="#resource_comment" slot="resource" />
+    <ResourceItem
+      title="GenericErrorModel"
+      url="#resource_generic_error_model"
+      slot="resource"
+    />
+    <ResourceItem
+      title="LoginUser"
+      url="#resource_login_user"
+      slot="resource"
+    />
+    <ResourceItem
+      title="NewArticle"
+      url="#resource_new_article"
+      slot="resource"
+    />
+    <ResourceItem
+      title="NewComment"
+      url="#resource_new_comment"
+      slot="resource"
+    />
+    <ResourceItem title="NewUser" url="#resource_new_user" slot="resource" />
+    <ResourceItem title="Profile" url="#resource_profile" slot="resource" />
+    <ResourceItem
+      title="UpdateArticle"
+      url="#resource_update_article"
+      slot="resource"
+    />
+    <ResourceItem
+      title="UpdateUser"
+      url="#resource_update_user"
+      slot="resource"
+    />
+    <ResourceItem title="User" url="#resource_user" slot="resource" />
+  </Sidebar>
+
+  <Overview>
+    <Fragment slot="title">RealWorld Conduit API</Fragment>
+    <Fragment slot="description">Conduit API documentation</Fragment>
+    <Fragment slot="version">1.0.0</Fragment>
+    <Server url="https://api.realworld.io/api" slot="server" />
+  </Overview>
+
+  <Tag name="Articles">
+    <Operation
+      id="operation_articles_get"
+      operationId="GetArticles"
+      method="get"
+      path="/articles"
+      summary="Get recent articles globally"
+    >
+      <Fragment slot="description">
+        Get most recent articles globally. Use query parameters to filter
+        results. Auth is optional
+      </Fragment>
+      <Parameter name="tag" type="string" slot="query_parameters">
+        <Fragment slot="description">Filter by tag</Fragment>
+      </Parameter>
+      <Parameter name="author" type="string" slot="query_parameters">
+        <Fragment slot="description">Filter by author (username)</Fragment>
+      </Parameter>
+      <Parameter name="favorited" type="string" slot="query_parameters">
+        <Fragment slot="description">
+          Filter by favorites of a user (username)
+        </Fragment>
+      </Parameter>
+      <Parameter
+        name="offset"
+        type="integer"
+        minimum={0}
+        slot="query_parameters"
+      >
+        <Fragment slot="description">
+          The number of items to skip before starting to collect the result set.
+        </Fragment>
+      </Parameter>
+      <Parameter
+        name="limit"
+        type="integer"
+        minimum={0}
+        defaultValue={20}
+        slot="query_parameters"
+      >
+        <Fragment slot="description">The numbers of items to return.</Fragment>
+      </Parameter>
+      <Responses id="responses_articles_get" slot="responses">
+        <Response status={200} description="OK" />
+        <Response status={401} description="Unauthorized" />
+        <Response status={422} description="Unexpected error" />
+      </Responses>
+      <RequestExample method="get" url="/articles" slot="code">
+        <CodeBlock slot="curl">This is cURL example code.</CodeBlock>
+        <CodeBlock slot="vanilla_js">This is vanilla JS example.</CodeBlock>
+        <CodeBlock slot="js_sdk">This is JavaScript SDK example.</CodeBlock>
+      </RequestExample>
+      <ResponseExamples slot="example" />
+    </Operation>
+    <Operation
+      id="operation_article_post"
+      operationId="CreateArticle"
+      method="post"
+      path="/articles"
+      summary="Create an article"
+    >
+      <Fragment slot="description">
+        Create an article. Auth is required
+      </Fragment>
+      <RequestBody type="object" slot="request_body">
+        <Fragment slot="description">Article to create</Fragment>
+        <Property name="article" type="object" required hasChildren>
+          <Property name="title" type="string" required />
+          <Property name="description" type="string" required />
+          <Property name="body" type="string" required />
+          <Property name="tagList" type="array of strings" />
+        </Property>
+      </RequestBody>
+      <Responses id="responses_article_post" slot="responses">
+        <Response status={201} description="Single article" />
+        <Response status={401} description="Unauthorized" />
+        <Response status={422} description="Unexpected error" />
+      </Responses>
+      <RequestExample method="post" url="/articles" slot="code">
+        <CodeBlock slot="curl">This is cURL example code.</CodeBlock>
+        <CodeBlock slot="vanilla_js">This is vanilla JS example.</CodeBlock>
+        <CodeBlock slot="js_sdk">This is JavaScript SDK example.</CodeBlock>
+      </RequestExample>
+      <ResponseExamples slot="example" />
+    </Operation>
+    <Operation
+      id="operation_article_get"
+      operationId="GetArticle"
+      method="get"
+      path="/articles/{slug}"
+      summary="Get an article"
+    >
+      <Fragment slot="description">Get an article. Auth not required</Fragment>
+      <Parameter name="slug" type="string" required slot="path_parameters">
+        <Fragment slot="description">Slug of the article to get</Fragment>
+      </Parameter>
+      <Responses id="responses_article_get" slot="responses">
+        <Response status={200} description="Single article" />
+        <Response status={422} description="Unexpected error" />
+      </Responses>
+      <RequestExample method="get" url="/articles/{slug}" slot="code">
+        <CodeBlock slot="curl">This is cURL example code.</CodeBlock>
+        <CodeBlock slot="vanilla_js">This is vanilla JS example.</CodeBlock>
+        <CodeBlock slot="js_sdk">This is JavaScript SDK example.</CodeBlock>
+      </RequestExample>
+      <ResponseExamples slot="example" />
+    </Operation>
+    <Operation
+      id="operation_article_update"
+      operationId="UpdateArticle"
+      method="put"
+      path="/articles/{slug}"
+      summary="Update an article"
+    >
+      <Fragment slot="description">
+        Update an article. Auth is required
+      </Fragment>
+      <Parameter name="slug" type="string" required slot="path_parameters">
+        <Fragment slot="description">Slug of the article to update</Fragment>
+      </Parameter>
+      <RequestBody type="object" required slot="request_body">
+        <Fragment slot="description">Article to update</Fragment>
+        <Property name="article" type="object" required hasChildren>
+          <Property name="title" type="string" />
+          <Property name="description" type="string" />
+          <Property name="body" type="string" />
+        </Property>
+      </RequestBody>
+      <Responses id="responses_articles_update" slot="responses">
+        <Response status={200} description="Single article" />
+        <Response status={401} description="Unathorized" />
+        <Response status={422} description="Unexpected error" />
+      </Responses>
+      <RequestExample method="put" url="/articles/{slug}" slot="code">
+        <CodeBlock slot="curl">This is cURL example code.</CodeBlock>
+        <CodeBlock slot="vanilla_js">This is vanilla JS example.</CodeBlock>
+        <CodeBlock slot="js_sdk">This is JavaScript SDK example.</CodeBlock>
+      </RequestExample>
+      <ResponseExamples slot="example" />
+    </Operation>
+    <Operation
+      id="operation_article_delete"
+      operationId="DeleteArticle"
+      method="delete"
+      path="/articles/{slug}"
+      summary="Delete an article"
+    >
+      <Fragment slot="description">
+        Delete an article. Auth is required
+      </Fragment>
+      <Parameter name="slug" type="string" required slot="path_parameters">
+        <Fragment slot="description">Slug of the article to delete</Fragment>
+      </Parameter>
+      <Responses id="responses_article_delete" slot="responses">
+        <Response status={200} description="No content" />
+        <Response status={401} description="Unathorized" />
+        <Response status={422} description="Unexpected error" />
+      </Responses>
+      <RequestExample method="delete" url="/articles/{slug}" slot="code">
+        <CodeBlock slot="curl">This is cURL example code.</CodeBlock>
+        <CodeBlock slot="vanilla_js">This is vanilla JS example.</CodeBlock>
+        <CodeBlock slot="js_sdk">This is JavaScript SDK example.</CodeBlock>
+      </RequestExample>
+      <ResponseExamples slot="example" />
+    </Operation>
+    <Operation
+      id="operation_article_feed"
+      operationId="GetArticlesFeed"
+      method="delete"
+      path="/articles/feed"
+      summary="Get most recent articles from users you follow"
+    >
+      <Fragment slot="description">
+        Get most recent articles from users you follow. Use query parameters to
+        limit. Auth is required
+      </Fragment>
+      <Parameter
+        name="offset"
+        type="integer"
+        minimum={0}
+        slot="query_parameters"
+      >
+        <Fragment slot="description">
+          The number of items to skip before starting to collect the result set.
+        </Fragment>
+      </Parameter>
+      <Parameter
+        name="limit"
+        type="integer"
+        minimum={0}
+        defaultValue={20}
+        slot="query_parameters"
+      >
+        <Fragment slot="description">The numbers of items to return.</Fragment>
+      </Parameter>
+      <Responses id="responses_article_feed" slot="responses">
+        <Response status={200} description="Multiple articles" />
+        <Response status={401} description="Unathorized" />
+        <Response status={422} description="Unexpected error" />
+      </Responses>
+      <RequestExample method="get" url="/articles/feed" slot="code">
+        <CodeBlock slot="curl">This is cURL example code.</CodeBlock>
+        <CodeBlock slot="vanilla_js">This is vanilla JS example.</CodeBlock>
+        <CodeBlock slot="js_sdk">This is JavaScript SDK example.</CodeBlock>
+      </RequestExample>
+      <ResponseExamples slot="example" />
+    </Operation>
+  </Tag>
+  <Tag name="Comments">
+    <Operation
+      id="operation_comments_get"
+      operationId="GetArticleComments"
+      method="get"
+      path="/articles/{slug}/comments"
+      summary="Get comments for an article"
+    >
+      <Fragment slot="description">
+        Get the comments for an article. Auth is optional
+      </Fragment>
+      <Parameter name="slug" type="string" required slot="path_parameters">
+        <Fragment slot="description">
+          Slug of the article to get comments for
+        </Fragment>
+      </Parameter>
+      <Responses id="responses_comments_get" slot="responses">
+        <Response status={200} description="Multiple comments" />
+        <Response status={401} description="Unathorized" />
+        <Response status={422} description="Unexpected error" />
+      </Responses>
+      <RequestExample method="get" url="/articles/{slug}/comments" slot="code">
+        <CodeBlock slot="curl">This is cURL example code.</CodeBlock>
+        <CodeBlock slot="vanilla_js">This is vanilla JS example.</CodeBlock>
+        <CodeBlock slot="js_sdk">This is JavaScript SDK example.</CodeBlock>
+      </RequestExample>
+      <ResponseExamples slot="example" />
+    </Operation>
+    <Operation
+      id="operation_comment_create"
+      operationId="CreateArticleComment"
+      method="post"
+      path="/articles/{slug}/comments"
+      summary="Create a comment"
+    >
+      <Fragment slot="description">
+        Create a comment for an article. Auth is required
+      </Fragment>
+      <Parameter name="slug" type="string" required slot="path_parameters">
+        <Fragment slot="description">
+          Slug of the article that you want to create comments for
+        </Fragment>
+      </Parameter>
+      <RequestBody type="object" required slot="request_body">
+        <Fragment slot="description">Comment you want to create</Fragment>
+        <Property name="comment" type="object" required hasChildren>
+          <Property name="body" type="string" required />
+        </Property>
+      </RequestBody>
+      <Responses id="responses_comment_create" slot="responses">
+        <Response status={200} description="Single comment" />
+        <Response status={401} description="Unathorized" />
+        <Response status={422} description="Unexpected error" />
+      </Responses>
+      <RequestExample method="post" url="/articles/{slug}/comments" slot="code">
+        <CodeBlock slot="curl">This is cURL example code.</CodeBlock>
+        <CodeBlock slot="vanilla_js">This is vanilla JS example.</CodeBlock>
+        <CodeBlock slot="js_sdk">This is JavaScript SDK example.</CodeBlock>
+      </RequestExample>
+      <ResponseExamples slot="example" />
+    </Operation>
+    <Operation
+      id="operation_comment_delete"
+      operationId="DeleteArticleComment"
+      method="delete"
+      path="/articles/{slug}/comments/{id}"
+      summary="Delete a comment"
+    >
+      <Fragment slot="description">
+        Delete a comment for an article. Auth is required
+      </Fragment>
+      <Parameter name="slug" type="string" required slot="path_parameters">
+        <Fragment slot="description">
+          Slug of the article that you want to delete comments for
+        </Fragment>
+      </Parameter>
+      <Parameter name="id" type="integer" required slot="path_parameters">
+        <Fragment slot="description">ID of the comment to delete</Fragment>
+      </Parameter>
+      <Responses id="responses_comment_delete" slot="responses">
+        <Response status={200} description="No content" />
+        <Response status={401} description="Unathorized" />
+        <Response status={422} description="Unexpected error" />
+      </Responses>
+      <RequestExample
+        method="delete"
+        url="/articles/{slug}/comments/{id}"
+        slot="code"
+      >
+        <CodeBlock slot="curl">This is cURL example code.</CodeBlock>
+        <CodeBlock slot="vanilla_js">This is vanilla JS example.</CodeBlock>
+        <CodeBlock slot="js_sdk">This is JavaScript SDK example.</CodeBlock>
+      </RequestExample>
+      <ResponseExamples slot="example" />
+    </Operation>
+  </Tag>
+  <Tag name="Favorite">
+    <Operation
+      id="operation_article_favorite"
+      operationId="CreateArticleFavorite"
+      method="post"
+      path="/articles/{slug}/favorite"
+      summary="Favorite an article"
+    >
+      <Fragment slot="description">
+        Favorite an article. Auth is required
+      </Fragment>
+      <Parameter name="slug" type="string" required slot="path_parameters">
+        <Fragment slot="description">
+          Slug of the article that you want to favorite
+        </Fragment>
+      </Parameter>
+      <Responses id="responses_article_favorite" slot="responses">
+        <Response status={200} description="No content" />
+        <Response status={401} description="Unathorized" />
+        <Response status={422} description="Unexpected error" />
+      </Responses>
+      <RequestExample
+        method="post"
+        url="/articles/{slug}/favorites"
+        slot="code"
+      >
+        <CodeBlock slot="curl">This is cURL example code.</CodeBlock>
+        <CodeBlock slot="vanilla_js">This is vanilla JS example.</CodeBlock>
+        <CodeBlock slot="js_sdk">This is JavaScript SDK example.</CodeBlock>
+      </RequestExample>
+      <ResponseExamples slot="example" />
+    </Operation>
+    <Operation
+      id="operation_article_unfavorite"
+      operationId="DeleteArticleFavorite"
+      method="delete"
+      path="/articles/{slug}/favorite"
+      summary="Unfavorite an article"
+    >
+      <Fragment slot="description">
+        Unfavorite an article. Auth is required
+      </Fragment>
+      <Parameter name="slug" type="string" required slot="path_parameters">
+        <Fragment slot="description">
+          Slug of the article that you want to unfavorite
+        </Fragment>
+      </Parameter>
+      <Responses id="responses_article_unfavorite" slot="responses">
+        <Response status={200} description="Single article" />
+        <Response status={401} description="Unathorized" />
+        <Response status={422} description="Unexpected error" />
+      </Responses>
+      <RequestExample
+        method="delete"
+        url="/articles/{slug}/favorite"
+        slot="code"
+      >
+        <CodeBlock slot="curl">This is cURL example code.</CodeBlock>
+        <CodeBlock slot="vanilla_js">This is vanilla JS example.</CodeBlock>
+        <CodeBlock slot="js_sdk">This is JavaScript SDK example.</CodeBlock>
+      </RequestExample>
+      <ResponseExamples slot="example" />
+    </Operation>
+  </Tag>
+  <Tag name="Profiles">
+    <Operation
+      id="operation_profile_get"
+      operationId="GetProfileByUsername"
+      method="get"
+      path="/profiles/{username}"
+      summary="Get a profile"
+    >
+      <Fragment slot="description">
+        Get a profile of a user of the system. Auth is optional
+      </Fragment>
+      <Parameter name="username" type="string" required slot="path_parameters">
+        <Fragment slot="description">Username of the profile to get</Fragment>
+      </Parameter>
+      <Responses id="responses_profile_get" slot="responses">
+        <Response status={200} description="Single profile" />
+        <Response status={401} description="Unathorized" />
+        <Response status={422} description="Unexpected error" />
+      </Responses>
+      <RequestExample method="get" url="/profiles/{username}" slot="code">
+        <CodeBlock slot="curl">This is cURL example code.</CodeBlock>
+        <CodeBlock slot="vanilla_js">This is vanilla JS example.</CodeBlock>
+        <CodeBlock slot="js_sdk">This is JavaScript SDK example.</CodeBlock>
+      </RequestExample>
+      <ResponseExamples slot="example" />
+    </Operation>
+    <Operation
+      id="operation_profile_follow"
+      operationId="FollowUserByUsername"
+      method="post"
+      path="/profiles/{username}/follow"
+      summary="Follow a user"
+    >
+      <Fragment slot="description">
+        Username of the profile you want to follow
+      </Fragment>
+      <Parameter name="username" type="string" required slot="path_parameters">
+        <Fragment slot="description">
+          Username of the profile to follow
+        </Fragment>
+      </Parameter>
+      <Responses id="responses_profile_follow" slot="responses">
+        <Response status={200} description="Single profile" />
+        <Response status={401} description="Unathorized" />
+        <Response status={422} description="Unexpected error" />
+      </Responses>
+      <RequestExample
+        method="post"
+        url="/profiles/{username}/follow"
+        slot="code"
+      >
+        <CodeBlock slot="curl">This is cURL example code.</CodeBlock>
+        <CodeBlock slot="vanilla_js">This is vanilla JS example.</CodeBlock>
+        <CodeBlock slot="js_sdk">This is JavaScript SDK example.</CodeBlock>
+      </RequestExample>
+      <ResponseExamples slot="example" />
+    </Operation>
+    <Operation
+      id="operation_profile_unfollow"
+      operationId="UnfollowUserByUsername"
+      method="delete"
+      path="/profiles/{username}/follow"
+      summary="Unfollow a user"
+    >
+      <Fragment slot="description">
+        Username of the profile you want to unfollow
+      </Fragment>
+      <Parameter name="username" type="string" required slot="path_parameters">
+        <Fragment slot="description">
+          Username of the profile you want to unfollow
+        </Fragment>
+      </Parameter>
+      <Responses id="responses_profile_unfollow" slot="responses">
+        <Response status={200} description="Single profile" />
+        <Response status={401} description="Unathorized" />
+        <Response status={422} description="Unexpected error" />
+      </Responses>
+      <RequestExample
+        method="delete"
+        url="/profiles/{username}/follow"
+        slot="code"
+      >
+        <CodeBlock slot="curl">This is cURL example code.</CodeBlock>
+        <CodeBlock slot="vanilla_js">This is vanilla JS example.</CodeBlock>
+        <CodeBlock slot="js_sdk">This is JavaScript SDK example.</CodeBlock>
+      </RequestExample>
+      <ResponseExamples slot="example" />
+    </Operation>
+  </Tag>
+  <Tag name="Tags">
+    <Operation
+      id="operation_tag_list"
+      operationId="GetTags"
+      method="get"
+      path="/tags"
+      summary="Get tags"
+    >
+      <Fragment slot="description">Get tags. Auth not required</Fragment>
+      <Responses id="responses_tag_list" slot="responses">
+        <Response status={200} description="Tags" />
+        <Response status={422} description="Unexpected error" />
+      </Responses>
+      <RequestExample method="get" url="/tags" slot="code">
+        <CodeBlock slot="curl">This is cURL example code.</CodeBlock>
+        <CodeBlock slot="vanilla_js">This is vanilla JS example.</CodeBlock>
+        <CodeBlock slot="js_sdk">This is JavaScript SDK example.</CodeBlock>
+      </RequestExample>
+      <ResponseExamples slot="example" />
+    </Operation>
+  </Tag>
+  <Tag name="User and Authentication">
+    <Operation
+      id="operation_user_register"
+      operationId="CreateUser"
+      method="post"
+      path="/users"
+      summary="Register a user"
+    >
+      <Fragment slot="description">Register a new user</Fragment>
+      <RequestBody type="object" required slot="request_body">
+        <Fragment slot="description">
+          Details of the new user to register
+        </Fragment>
+        <Property name="user" type="object" required hasChildren>
+          <Property name="username" type="string" required />
+          <Property name="email" type="string" required />
+          <Property name="password" type="string" required />
+        </Property>
+      </RequestBody>
+      <Responses id="responses_user_register" slot="responses">
+        <Response status={201} description="User" />
+        <Response status={422} description="Unexpected error" />
+      </Responses>
+      <RequestExample method="post" url="/users" slot="code">
+        <CodeBlock slot="curl">This is cURL example code.</CodeBlock>
+        <CodeBlock slot="vanilla_js">This is vanilla JS example.</CodeBlock>
+        <CodeBlock slot="js_sdk">This is JavaScript SDK example.</CodeBlock>
+      </RequestExample>
+      <ResponseExamples slot="example" />
+    </Operation>
+    <Operation
+      id="operation_user_login"
+      operationId="Login"
+      method="post"
+      path="/users/login"
+      summary="Login a user"
+    >
+      <Fragment slot="description">Login for existing user</Fragment>
+      <RequestBody type="object" slot="request_body">
+        <Fragment slot="description">Credentials to use</Fragment>
+        <Property name="user" type="object" required hasChildren>
+          <Property name="email" type="string" required />
+          <Property name="password" type="string" required />
+        </Property>
+      </RequestBody>
+      <Responses id="responses_user_login" slot="responses">
+        <Response status={200} description="User" />
+        <Response status={401} description="Unauthorized" />
+        <Response status={422} description="Unexpected error" />
+      </Responses>
+      <RequestExample method="post" url="/users/login" slot="code">
+        <CodeBlock slot="curl">This is cURL example code.</CodeBlock>
+        <CodeBlock slot="vanilla_js">This is vanilla JS example.</CodeBlock>
+        <CodeBlock slot="js_sdk">This is JavaScript SDK example.</CodeBlock>
+      </RequestExample>
+      <ResponseExamples slot="example" />
+    </Operation>
+    <Operation
+      id="operation_current_user_get"
+      operationId="GetCurrentUser"
+      method="get"
+      path="/user"
+      summary="Get current user"
+    >
+      <Fragment slot="description">Gets the currently logged-in user</Fragment>
+      <Responses id="responses_user_get" slot="responses">
+        <Response status={200} description="User" />
+        <Response status={401} description="Unauthorized" />
+        <Response status={422} description="Unexpected error" />
+      </Responses>
+      <RequestExample method="get" url="/user" slot="code">
+        <CodeBlock slot="curl">This is cURL example code.</CodeBlock>
+        <CodeBlock slot="vanilla_js">This is vanilla JS example.</CodeBlock>
+        <CodeBlock slot="js_sdk">This is JavaScript SDK example.</CodeBlock>
+      </RequestExample>
+      <ResponseExamples slot="example" />
+    </Operation>
+    <Operation
+      id="operation_current_user_update"
+      operationId="UpdateCurrentUser"
+      method="put"
+      path="/user"
+      summary="Update current user"
+    >
+      <Fragment slot="description">
+        Updated user information for current user
+      </Fragment>
+      <RequestBody type="object" required slot="request_body">
+        <Fragment slot="description">
+          User details to update. At least **one** field is required.
+        </Fragment>
+        <Property name="user" type="object" required hasChildren>
+          <Property name="username" type="string" />
+          <Property name="email" type="string" />
+          <Property name="password" type="string" />
+          <Property name="bio" type="string" />
+          <Property name="image" type="string" />
+        </Property>
+        <Responses id="responses_user_update" slot="responses">
+          <Response status={200} description="User" />
+          <Response status={401} description="Unauthorized" />
+          <Response status={422} description="Unexpected error" />
+        </Responses>
+      </RequestBody>
+      <RequestExample method="put" url="/user" slot="code">
+        <CodeBlock slot="curl">This is cURL example code.</CodeBlock>
+        <CodeBlock slot="vanilla_js">This is vanilla JS example.</CodeBlock>
+        <CodeBlock slot="js_sdk">This is JavaScript SDK example.</CodeBlock>
+      </RequestExample>
+      <ResponseExamples slot="example" />
+    </Operation>
+  </Tag>
+  <Tag name="Resources">
+    <Resource id="resource_article" name="Article" type="object">
+      <Fragment slot="description"></Fragment>
+      <Property name="slug" type="string" required slot="properties" />
+      <Property name="title" type="string" required slot="properties" />
+      <Property name="description" type="string" required slot="properties" />
+      <Property name="body" type="string" required slot="properties" />
+      <Property name="tagList" type="string" required slot="properties" />
+      <Property name="createdAt" type="string" required slot="properties" />
+      <Property name="updatedAt" type="string" required slot="properties" />
+      <Property name="favorited" type="boolean" required slot="properties" />
+      <Property
+        name="favoritesCount"
+        type="integer"
+        required
+        slot="properties"
+      />
+      <Property
+        name="author"
+        type="object"
+        required
+        hasChildren
+        slot="properties"
+      >
+        <!-- In principle this is Profile resource. Perhaps linking to it would be more appropriate -->
+        <Property name="username" type="string" required />
+        <Property name="bio" type="string" required />
+        <Property name="image" type="string" required />
+        <Property name="following" type="boolean" required />
+      </Property>
+    </Resource>
+    <Resource id="resource_comment" name="Comment" type="object">
+      <Fragment slot="description"></Fragment>
+      <Property name="id" type="integer" required slot="properties" />
+      <Property
+        name="createdAt"
+        type="string(date-time)"
+        required
+        slot="properties"
+      />
+      <Property
+        name="updatedAt"
+        type="string(date-time)"
+        required
+        slot="properties"
+      />
+      <Property name="body" type="string" required slot="properties" />
+      <Property
+        name="author"
+        type="object"
+        required
+        hasChildren
+        slot="properties"
+      >
+        <Property name="username" type="string" required />
+        <Property name="bio" type="string" required />
+        <Property name="image" type="string" required />
+        <Property name="following" type="boolean" required />
+      </Property>
+    </Resource>
+    <Resource
+      id="resource_generic_error_model"
+      name="GenericErrorModel"
+      type="object"
+    >
+      <Fragment slot="description"></Fragment>
+      <Property
+        name="errors"
+        type="object"
+        required
+        hasChildren
+        slot="properties"
+      >
+        <Property name="body" type="array of strings" required />
+      </Property>
+    </Resource>
+    <Resource id="resource_login_user" name="LoginUser" type="object">
+      <Fragment slot="description"></Fragment>
+      <Property name="email" type="string" required slot="properties" />
+      <Property
+        name="password"
+        type="string(password)"
+        required
+        slot="properties"
+      />
+    </Resource>
+    <Resource id="resource_new_article" name="NewArticle" type="object">
+      <Fragment slot="description"></Fragment>
+      <Property name="body" type="string" required slot="properties" />
+      <Property name="description" type="string" required slot="properties" />
+      <Property name="title" type="string" required slot="properties" />
+      <Property name="tagList" type="array of strings" slot="properties" />
+    </Resource>
+    <Resource id="resource_new_comment" name="NewComment" type="object">
+      <Fragment slot="description"></Fragment>
+      <Property name="body" type="string" required slot="properties" />
+    </Resource>
+    <Resource id="resource_new_user" name="NewUser" type="object">
+      <Fragment slot="description"></Fragment>
+      <Property name="username" type="string" required slot="properties" />
+      <Property name="email" type="string" required slot="properties" />
+      <Property
+        name="password"
+        type="string(password)"
+        required
+        slot="properties"
+      />
+    </Resource>
+    <Resource id="resource_profile" name="Profile" type="object">
+      <Fragment slot="description"></Fragment>
+      <Property name="username" type="string" required slot="properties" />
+      <Property name="bio" type="string" required slot="properties" />
+      <Property name="image" type="string" required slot="properties" />
+      <Property name="following" type="boolean" required slot="properties" />
+    </Resource>
+    <Resource id="resource_update_article" name="UpdateArticle" type="object">
+      <Fragment slot="description"></Fragment>
+      <Property name="body" type="string" slot="properties" />
+      <Property name="description" type="string" slot="properties" />
+      <Property name="title" type="string" slot="properties" />
+    </Resource>
+    <Resource id="resource_update_user" name="UpdateUser" type="object">
+      <Fragment slot="description"></Fragment>
+      <Property name="username" type="string" slot="properties" />
+      <Property name="email" type="string" slot="properties" />
+      <Property name="password" type="string" slot="properties" />
+      <Property name="bio" type="string" slot="properties" />
+      <Property name="image" type="string" slot="properties" />
+    </Resource>
+    <Resource id="resource_user" name="User" type="object">
+      <Fragment slot="description"></Fragment>
+      <Property name="username" type="string" required slot="properties" />
+      <Property name="email" type="string" required slot="properties" />
+      <Property name="token" type="string" required slot="properties" />
+      <Property name="bio" type="string" required slot="properties" />
+      <Property name="image" type="string" required slot="properties" />
+    </Resource>
+  </Tag>
+</Layout>

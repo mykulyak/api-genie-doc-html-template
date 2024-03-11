@@ -1,0 +1,13 @@
+---
+interface Props {
+  summary?: string;
+  method: string;
+  url: string;
+}
+
+const { summary, url } = Astro.props;
+---
+
+<div class="text-sm py-1 item">
+  <a href={url}><span>{summary}</span></a>
+</div>

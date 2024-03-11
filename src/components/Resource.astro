@@ -1,0 +1,115 @@
+---
+import { Icon } from "astro-icon/components";
+import KVPair from "./schema/KVPair.astro";
+
+interface Props {
+  id: string;
+  name: string;
+  // generic
+  type: string;
+  allowedValues?: (string | number | boolean | null)[];
+  // numeric
+  minimum?: number;
+  maximum?: number;
+  multipleOf?: number;
+  // string
+  minLength?: number;
+  maxLength?: number;
+  // array
+  minItems?: number;
+  maxItems?: number;
+  // object
+  minProperties?: number;
+  maxProperties?: number;
+}
+
+const {
+  id,
+  name,
+  type,
+  allowedValues,
+  minimum,
+  maximum,
+  multipleOf,
+  minLength,
+  maxLength,
+  minItems,
+  maxItems,
+  minProperties,
+  maxProperties,
+} = Astro.props;
+
+const hasLimits =
+  (allowedValues != null && allowedValues.length > 0) ||
+  minimum != null ||
+  maximum != null ||
+  multipleOf != null ||
+  minLength != null ||
+  maxLength != null ||
+  minItems != null ||
+  maxItems != null ||
+  minProperties != null ||
+  maxProperties != null;
+---
+
+<div class="mb-8" id={id}>
+  <h3 class="text-2xl font-bold mb-2">
+    <a href={`#${id}`}>
+      <span class="hover:underline">{name}</span>
+      <Icon name="link" class="inline-block text-slate-400" />
+    </a>
+  </h3>
+  <div class="text-lg text-slate-500">{type}</div>
+
+  {
+    Astro.slots.has("description") && (
+      <div class="leading-tight mb-2">
+        <slot name="description" />
+      </div>
+    )
+  }
+
+  {
+    hasLimits && (
+      <div class="flex gap-2">
+        {minimum != null && <KVPair title="Minimum" value={minimum} />}
+        {maximum != null && <KVPair title="Maximum" value={maximum} />}
+        {multipleOf != null && (
+          <KVPair title="Multiple of" value={multipleOf} />
+        )}
+        {minLength != null && (
+          <KVPair title="Minimum length" value={minLength} />
+        )}
+        {maxLength != null && (
+          <KVPair title="Maximum length" value={maxLength} />
+        )}
+        {minItems != null && <KVPair title="Minimal length" value={minItems} />}
+        {maxItems != null && <KVPair title="Maximum length" value={maxItems} />}
+        {minProperties != null && (
+          <KVPair title="Minimal property count" value={minProperties} />
+        )}
+        {maxProperties != null && (
+          <KVPair title="Maximum property count" value={maxProperties} />
+        )}
+        {allowedValues != null && allowedValues.length > 0 && (
+          <KVPair title="Allowed values" value={allowedValues} />
+        )}
+      </div>
+    )
+  }
+
+  <slot name="properties" />
+
+  {Astro.slots.has("usages") && (
+    <div class="mt-3">
+      <h3 class="text-2xl font-bold mb-2">Used in operations</h3>
+      <slot name="usages" />
+    </div>
+  )}
+</div>
+
+<style>
+  .visible {
+    visibility: visible;
+  }
+</style>

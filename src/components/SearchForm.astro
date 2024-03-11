@@ -1,0 +1,145 @@
+---
+interface Props {
+  allowedMethods?: string[];
+}
+
+const { allowedMethods = [] } = Astro.props;
+---
+
+<form name="search" method="get" action="#">
+  <label>Method</label>
+  <div>
+    {
+      allowedMethods.includes("GET") && (
+        <span>
+          <input type="checkbox" name="method" value="GET" id="method-get" />
+          <label for="method-get">GET</label>
+        </span>
+      )
+    }
+    {
+      allowedMethods.includes("POST") && (
+        <span>
+          <input type="checkbox" name="method" value="POST" id="method-post" />
+          <label for="method-post">POST</label>
+        </span>
+      )
+    }
+    {
+      allowedMethods.includes("PUT") && (
+        <span>
+          <input type="checkbox" name="method" value="PUT" id="method-put" />
+          <label for="method-put">PUT</label>
+        </span>
+      )
+    }
+    {
+      allowedMethods.includes("DELETE") && (
+        <span>
+          <input
+            type="checkbox"
+            name="method"
+            value="DELETE"
+            id="method-delete"
+          />
+          <label for="method-delete">DELETE</label>
+        </span>
+      )
+    }
+    {
+      allowedMethods.includes("PATCH") && (
+        <span>
+          <input
+            type="checkbox"
+            name="method"
+            value="PATCH"
+            id="method-patch"
+          />
+          <label for="method-patch">PATCH</label>
+        </span>
+      )
+    }
+    {
+      allowedMethods.includes("OPTIONS") && (
+        <span>
+          <input
+            type="checkbox"
+            name="method"
+            value="OPTIONS"
+            id="method-options"
+          />
+          <label for="method-options">OPTIONS</label>
+        </span>
+      )
+    }
+    {
+      allowedMethods.includes("HEAD") && (
+        <span>
+          <input type="checkbox" name="method" value="HEAD" id="method-head" />
+          <label for="method-head">HEAD</label>
+        </span>
+      )
+    }
+    {
+      allowedMethods.includes("TRACE") && (
+        <span>
+          <input
+            type="checkbox"
+            name="method"
+            value="TRACE"
+            id="method-trace"
+          />
+          <label for="method-trace">TRACE</label>
+        </span>
+      )
+    }
+  </div>
+
+  <label>URL</label>
+  <input type="text" name="url" placeholder="Type 3 or more characters..." />
+
+  <button type="submit" class="bg-blue-700 px-3 py-1 rounded text-white"
+    >Search</button
+  >
+</form>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const form = document.forms.namedItem("search");
+
+    form?.addEventListener("submit", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      const formData = new FormData(form);
+
+      const allowedMethods = new Set(formData.getAll("method"));
+      const queryString = (formData.get("url") as string).toLowerCase();
+
+      const nodes = form
+        .closest("[data-search-root]")
+        ?.querySelectorAll("tbody tr[data-search-method]");
+
+      if (allowedMethods.size || queryString.length > 3) {
+        nodes?.forEach((rowElem) => {
+          const methodAllowed =
+            !allowedMethods.size ||
+            allowedMethods.has(
+              (rowElem as HTMLElement).dataset.searchMethod as string
+            );
+          const urlAllowed =
+            queryString.length < 3 ||
+            (rowElem as HTMLElement).innerText
+              .toLowerCase()
+              .includes(queryString);
+
+          rowElem.classList.toggle("hidden", !(methodAllowed && urlAllowed));
+        });
+      } else {
+        nodes?.forEach((rowElem) => {
+          rowElem.classList.toggle("hidden", false);
+        });
+      }
+    });
+  });
+</script>

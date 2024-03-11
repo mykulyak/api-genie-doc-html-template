@@ -1,0 +1,19 @@
+---
+interface Props {
+  status: number | string;
+  description?: string;
+}
+
+const { status, description }: Props = Astro.props;
+
+let descriptionSlot = null;
+if (Astro.slots.has("description")) {
+  descriptionSlot = await Astro.slots.render("description");
+}
+---
+
+<tr>
+  <td>{status}</td>
+  {description != null && <td>{description}</td>}
+  {descriptionSlot != null && <td set:html={descriptionSlot}></td>}
+</tr>

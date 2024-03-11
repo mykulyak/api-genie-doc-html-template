@@ -1,0 +1,96 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  class?: string;
+  overviewUrl?: string;
+}
+
+const { class: className, overviewUrl = "#overview" }: Props = Astro.props;
+---
+
+<div
+  class:list={[
+    "w-80",
+    "flex",
+    "flex-col",
+    "p-4",
+    "bg-sidebar",
+    "h-full",
+    className,
+  ]}
+>
+  <div class="flex-none py-1 text-xl"><a href={overviewUrl}>Overview</a></div>
+  <div class="overflow-y-scroll flex-none min-h-0 h-full">
+    <div class="py-1">
+      <h2 class="py-1 text-xl">Operations</h2>
+      <slot name="operations" />
+    </div>
+    <div data-sidebar-group>
+      <h2
+        class="flex justify-between cursor-pointer py-1 text-xl"
+        data-sidebar-trigger
+      >
+        <span>Resources</span>
+        <span class="rotate-180" data-sidebar-chevron>
+          <Icon name="chevron-up" size={24} />
+        </span>
+      </h2>
+      <div class="hidden" data-sidebar-children>
+        <slot name="resource" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const currentHash = location.hash;
+    const triggerElemList = document.querySelectorAll("[data-sidebar-trigger]");
+
+    function toggleGroup(groupElem: HTMLElement, state?: boolean) {
+      groupElem
+        .querySelector("[data-sidebar-children]")
+        ?.classList.toggle("hidden", state);
+      groupElem
+        .querySelector("[data-sidebar-chevron]")
+        ?.classList.toggle("rotate-180", state);
+
+      if (state === true) {
+        groupElem.dataset.sidebarOpen = "false";
+      } else if (state === false) {
+        groupElem.dataset.open = "true";
+      } else {
+        groupElem.dataset.sidebarOpen =
+          groupElem.dataset.sidebarOpen === "true" ? "false" : "true";
+      }
+    }
+
+    triggerElemList.forEach((triggerElem) => {
+      const groupElem = triggerElem.closest("[data-sidebar-group]");
+
+      let hide = true;
+      groupElem?.querySelectorAll("a").forEach((linkElem) => {
+        hide = hide && currentHash !== new URL(linkElem.href).hash;
+      });
+
+      toggleGroup(groupElem as HTMLElement, hide);
+    });
+
+    triggerElemList.forEach((elem) => {
+      elem.addEventListener("click", (event) => {
+        const thisGroupElem = (event.target as HTMLElement)?.closest(
+          "[data-sidebar-group]"
+        );
+
+        triggerElemList.forEach((triggerElem) => {
+          const groupElem = triggerElem.closest("[data-sidebar-group]");
+          toggleGroup(
+            groupElem as HTMLElement,
+            groupElem === thisGroupElem ? undefined : true
+          );
+        });
+      });
+    });
+  });
+</script>
