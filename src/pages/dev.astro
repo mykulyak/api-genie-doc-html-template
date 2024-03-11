@@ -1,0 +1,120 @@
+---
+// import Operation from "../components/Operation.astro";
+// import Responses from "../components/operation/Responses.astro";
+// import Response from "../components/operation/Response.astro";
+// import RequestExample from "../components/RequestExample.astro";
+// import CodeBlock from "../components/code/CodeBlock.astro";
+// import ResponseExamples from "../components/ResponseExamples.astro";
+import Resource from "../components/Resource.astro";
+import Property from "../components/schema/Property.astro";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Astro description" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Developer's Playground</title>
+  </head>
+  <body class="p-10 max-h-[100vh] w-full">
+    <main class="mx-auto max-w-[1000px] overflow-y-scroll overflow-x-hidden">
+      <!-- <Operation
+        id="operation__app_get"
+        operationId="apps/get-authenticated"
+        method=""
+        path=""
+        summary="Get the authenticated app"
+      >
+        <Fragment slot="description">
+          <p>
+            Returns the GitHub App associated with the authentication
+            credentials used. To see how many app installations are associated
+            with this GitHub App, see the <code>installations_count</code> in the
+            response. For more details about your app's installations, see the &quot;<a
+              href="https://docs.github.com/rest/apps/apps#list-installations-for-the-authenticated-app"
+              >List installations for the authenticated app</a
+            >&quot; endpoint.
+          </p>
+          <p>
+            You must use a <a
+              href="https://docs.github.com/apps/building-github-apps/authenticating-with-github-apps/#authenticating-as-a-github-app"
+              >JWT</a
+            > to access this endpoint.
+          </p>
+        </Fragment>
+
+        <Responses id="responses_articles_get" slot="responses">
+          <Response status="200">
+            <Fragment slot="description"><p>Response</p>"</Fragment>
+          </Response>
+        </Responses>
+
+        <RequestExample method="" url="" slot="code">
+          <CodeBlock slot="curl">This is cURL example code.</CodeBlock>
+          <CodeBlock slot="vanilla_js">This is vanilla JS example.</CodeBlock>
+          <CodeBlock slot="js_sdk">This is JavaScript SDK example.</CodeBlock>
+        </RequestExample>
+        <ResponseExamples slot="example" />
+      </Operation> -->
+
+      <Resource
+        id="resource_hook_delivery"
+        name="Webhook delivery"
+        type="object"
+      >
+        <Fragment slot="description">Delivery made by a webhook.</Fragment>
+
+        <Property 
+          name="id" 
+          type="integer" 
+          required 
+          minimum={36}
+          maximum={123.56}
+          allowedValues={[1, 2, 3, 'abcd']}
+          slot="properties"
+        >
+          <Fragment slot="description">
+            Unique identifier of the delivery.
+          </Fragment>
+        </Property>
+
+        <Property 
+          name="guid" 
+          type="string(uuid)" 
+          required 
+          minLength={1}
+          maxLength={10}
+          slot="properties"
+          example="f4e3d1b0-2f0e-11ec-8d3d-0242ac130003"
+        >
+          <Fragment slot="description">
+            Unique identifier for the event (shared with all deliveries for all
+            webhooks that subscribe to this event).
+          </Fragment>
+        </Property>
+
+        <Property
+          name="delivered_at"
+          type="string(date-time) or null"
+          required
+          minLength={10}
+          maxLength={20}
+          slot="properties"
+        >
+          <Fragment slot="description">
+            Date and time when the delivery was made.
+          </Fragment>
+        </Property>
+
+        <Property name="redelivery" type="boolean" slot="properties">
+          <Fragment slot="description">
+            Whether the delivery is a redelivery.
+          </Fragment>
+        </Property>
+      </Resource>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,123 @@
+---
+import { Icon } from "astro-icon/components";
+import KVPair from './KVPair.astro';
+
+interface Props {
+  name: string;
+  // generic
+  type: string;
+  required?: boolean;
+  allowedValues?: (string | number | boolean | null)[];
+  hasChildren?: boolean;
+  // numeric
+  minimum?: number;
+  maximum?: number;
+  multipleOf?: number;
+  // string
+  minLength?: number;
+  maxLength?: number;
+  // array
+  minItems?: number;
+  maxItems?: number;
+  // object
+  minProperties?: number;
+  maxProperties?: number;
+  example?: null | boolean | number | string;
+}
+
+const {
+  name,
+  type,
+  required,
+  allowedValues,
+  hasChildren,
+  minimum,
+  maximum,
+  multipleOf,
+  minLength,
+  maxLength,
+  minItems,
+  maxItems,
+  minProperties,
+  maxProperties,
+  example,
+} = Astro.props;
+
+const hasLimits =
+  (allowedValues != null && allowedValues.length > 0) ||
+  minimum != null ||
+  maximum != null ||
+  multipleOf != null ||
+  minLength != null ||
+  maxLength != null ||
+  minItems != null ||
+  maxItems != null ||
+  minProperties != null ||
+  maxProperties != null;
+---
+
+<div class="py-3 border-t-[1px] flex flex-col gap-2">
+  <div>
+    <span class="font-bold bg-slate-200 py-1 px-2 rounded-[4px]">{name}</span>
+    <span class="text-slate-500 ml-2">{type}</span>
+    {required && <span class="text-red-800 ml-2">required</span>}
+  </div>
+
+  {
+    Astro.slots.has("description") && (
+      <div class="leading-tight">
+        <slot name="description" />
+      </div>
+    )
+  }
+
+  {
+    hasLimits && (
+      <div class="flex gap-2">
+        {minimum != null && <KVPair title="Minimum" value={minimum} />}
+        {maximum != null && <KVPair title="Maximum" value={maximum} />}
+        {multipleOf != null && <KVPair title="Multiple of" value={multipleOf} />}
+        {minLength != null && <KVPair title="Minimum length" value={minLength} />}
+        {maxLength != null && <KVPair title="Maximum length" value={maxLength} />}
+        {minItems != null && <KVPair title="Minimal length" value={minItems} />}
+        {maxItems != null && <KVPair title="Maximum length" value={maxItems} />}
+        {minProperties != null && <KVPair title="Minimal property count" value={minProperties} />}
+        {maxProperties != null && <KVPair title="Maximum property count" value={maxProperties} />}
+        {allowedValues != null && allowedValues.length > 0 && <KVPair title="Allowed values" value={allowedValues} />}
+      </div>
+    )
+  }
+
+  {example != null && <KVPair title="Example" value={example} />}
+
+  {
+    hasChildren && (
+      <Fragment>
+        <div class="cursor-pointer justify-center" data-toggle="trigger">
+          <span class="rotate-180 inline-block" data-toggle="chevron">
+            <Icon name="chevron-up" size={16} />
+          </span>
+          <span>Show children</span>
+        </div>
+        <div class="hidden pl-4" data-toggle="target">
+          <slot />
+        </div>
+      </Fragment>
+    )
+  }
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll('[data-toggle="trigger"]').forEach((target) => {
+      target.addEventListener("click", () => {
+        target.parentElement
+          ?.querySelector('[data-toggle="target"]')
+          ?.classList.toggle("hidden");
+        target
+          ?.querySelector('[data-toggle="chevron"]')
+          ?.classList.toggle("rotate-180");
+      });
+    });
+  });
+</script>

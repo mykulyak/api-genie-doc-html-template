@@ -1,0 +1,28 @@
+---
+type Primitive = null | boolean | number | string;
+
+interface Props {
+  title: string;
+  value: Primitive | Primitive[];
+}
+
+const { title, value } = Astro.props;
+---
+
+<span class="text-slate-500 text-sm leading-4">
+  {title}:
+  {
+    Array.isArray(value) ? (
+      value.map((v, index) => (
+        <Fragment>
+          {index > 0 && <span>, </span>}
+          <span class="px-1 py-[2px] rounded text-black bg-slate-200 font-mono">{v}</span>
+        </Fragment>
+      ))
+    ) : (
+      <span class="px-1 py-[2px] rounded text-black bg-slate-200 font-mono">
+        {value}
+      </span>
+    )
+  }
+</span>

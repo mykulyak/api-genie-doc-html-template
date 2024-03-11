@@ -1,0 +1,109 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  method: string;
+  url: string;
+}
+
+const { method, url } = Astro.props;
+---
+
+<div class="min-w-50 border border-sky-600" data-current="curl">
+  <h4 class="font-bold">Request code</h4>
+  <div class="mb-1">
+    <span class="font-bold font-mono uppercase">{method}</span>
+    <span class="ml-1 font-mono">{url}</span>
+  </div>
+  <div class="flex justify-between">
+    <ul class="list-none p-1">
+      <li data-tab="curl" class="inline mr-2 cursor-pointer pressed">cURL</li>
+      <li data-tab="vanilla_js" class="inline mx-2 cursor-pointer">
+        JavaScript (vanilla)
+      </li>
+    </ul>
+    <button aria-label="Copy" class="p-2">
+      <Icon name="copy" size={16} />
+    </button>
+  </div>
+  <div>
+    <div data-pane="curl"><slot name="curl" /></div>
+    <div data-pane="vanilla_js" class="hidden"><slot name="vanilla_js" /></div>
+  </div>
+</div>
+
+<script>
+  function domCopy(text: string) {
+    let n = document.createElement("pre");
+    Object.assign(n.style, {
+      opacity: "0",
+      pointerEvents: "none",
+      position: "absolute",
+      overflow: "hidden",
+      left: "0",
+      top: "0",
+      width: "20px",
+      height: "20px",
+      webkitUserSelect: "auto",
+      userSelect: "all",
+    });
+    n.ariaHidden = "true";
+    n.textContent = text;
+    document.body.appendChild(n);
+    let r = document.createRange();
+    r.selectNode(n);
+    const s = getSelection()!;
+    s.removeAllRanges();
+    s.addRange(r);
+    let ok = false;
+    try {
+      ok = document.execCommand("copy");
+    } finally {
+      s.removeAllRanges();
+      document.body.removeChild(n);
+    }
+    return ok;
+  }
+
+  document.addEventListener("click", async (event: MouseEvent) => {
+    const elem = event.target as HTMLElement;
+    if (elem.matches("li[data-tab]")) {
+      const root = elem.closest("div[data-current]") as HTMLElement;
+      if (root) {
+        root.dataset.current = elem.dataset.tab;
+        root.querySelectorAll("li[data-tab]").forEach((elem2) => {
+          elem2.classList.toggle("pressed", elem2 === event.target);
+        });
+        root.querySelectorAll("div[data-pane]").forEach((elem2) => {
+          const htmlElem = elem2 as HTMLElement;
+          htmlElem.classList.toggle(
+            "hidden",
+            htmlElem.dataset.pane !== root.dataset.current
+          );
+        });
+      }
+    }
+    const button = elem.closest("button[aria-label=Copy]");
+    if (button) {
+      const root = elem.closest("div[data-current]") as HTMLElement;
+      if (root) {
+        const codeElem = root.querySelector(
+          "[data-pane=" + root.dataset.current + "]"
+        ) as HTMLElement;
+        if (codeElem) {
+          let ok = false;
+          try {
+            await navigator.clipboard.writeText(codeElem.innerText);
+            ok = true;
+          } catch (err) {
+            ok = domCopy(codeElem.innerText);
+          }
+          if (ok) {
+            // FIXME show a tooptip
+            alert("Copied to clipboard");
+          }
+        }
+      }
+    }
+  });
+</script>

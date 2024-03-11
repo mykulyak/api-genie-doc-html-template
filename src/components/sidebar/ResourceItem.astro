@@ -1,0 +1,14 @@
+---
+interface Props {
+  title: string;
+  url: string;
+}
+
+const { title, url } = Astro.props;
+---
+
+<div class="py-1 text-sm">
+  <a href={url}>
+    {title}
+  </a>
+</div>

@@ -1,0 +1,21 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  summary: string;
+}
+
+const { summary } = Astro.props;
+---
+
+<div class="py-1" data-sidebar-group>
+  <div class="flex justify-between cursor-pointer" data-sidebar-trigger>
+    <span>{summary}</span>
+    <span class="rotate-180" data-sidebar-chevron>
+      <Icon name="chevron-up" size={24} />
+    </span>
+  </div>
+  <div class="hidden pl-4" data-sidebar-children>
+    <slot />
+  </div>
+</div>

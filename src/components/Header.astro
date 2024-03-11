@@ -1,0 +1,32 @@
+---
+import ThemeSelector from "./header/ThemeSelector.astro";
+import SearchField from "./header/SearchField.astro";
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<header
+  class:list={[
+    "h-12",
+    "bg-emerald-100",
+    "flex",
+    "flex-row",
+    "justify-between",
+    "items-center",
+    "gap-4",
+    "p-4",
+    className,
+  ]}
+>
+  <nav>
+    <h1 class="text-xl">RealWorld Conduit API</h1>
+  </nav>
+  <SearchField />
+  <div>
+    <ThemeSelector />
+  </div>
+</header>
