@@ -1,12 +1,9 @@
 ---
-import { Icon } from "astro-icon/components";
-
 interface Props {
   class?: string;
-  overviewUrl?: string;
 }
 
-const { class: className, overviewUrl = "#overview" }: Props = Astro.props;
+const { class: className }: Props = Astro.props;
 ---
 
 <div
@@ -20,26 +17,8 @@ const { class: className, overviewUrl = "#overview" }: Props = Astro.props;
     className,
   ]}
 >
-  <div class="flex-none py-1 text-xl"><a href={overviewUrl}>Overview</a></div>
   <div class="overflow-y-scroll flex-none min-h-0 h-full">
-    <div class="py-1">
-      <h2 class="py-1 text-xl">Operations</h2>
-      <slot name="operations" />
-    </div>
-    <div data-sidebar-group>
-      <h2
-        class="flex justify-between cursor-pointer py-1 text-xl"
-        data-sidebar-trigger
-      >
-        <span>Resources</span>
-        <span class="rotate-180" data-sidebar-chevron>
-          <Icon name="chevron-up" size={24} />
-        </span>
-      </h2>
-      <div class="hidden" data-sidebar-children>
-        <slot name="resource" />
-      </div>
-    </div>
+    <slot />
   </div>
 </div>
 

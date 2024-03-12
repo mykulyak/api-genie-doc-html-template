@@ -1,0 +1,18 @@
+---
+import { Icon } from "astro-icon/components";
+---
+
+<div data-sidebar-group>
+  <h2
+    class="flex justify-between cursor-pointer py-1 text-xl"
+    data-sidebar-trigger
+  >
+    <span>Resources</span>
+    <span class="rotate-180" data-sidebar-chevron>
+      <Icon name="chevron-up" size={24} />
+    </span>
+  </h2>
+  <div class="hidden" data-sidebar-children>
+    <slot />
+  </div>
+</div>

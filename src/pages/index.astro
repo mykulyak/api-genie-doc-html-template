@@ -5,9 +5,14 @@ import Overview from "../components/Overview.astro";
 import Tag from "../components/Tag.astro";
 import Resource from "../components/Resource.astro";
 import Layout from "../layouts/Layout.astro";
+import OverviewItem from "../components/sidebar/OverviewItem.astro";
+import OperationsWrapper from "../components/sidebar/OperationsWrapper.astro";
 import OperationItem from "../components/sidebar/OperationItem.astro";
 import OperationItemGroup from "../components/sidebar/OperationItemGroup.astro";
+import ResourcesWrapper from "../components/sidebar/ResourcesWrapper.astro";
 import ResourceItem from "../components/sidebar/ResourceItem.astro";
+import CustomItem from "../components/sidebar/CustomItem.astro";
+import CustomItemGroup from "../components/sidebar/CustomItemGroup.astro";
 import Sidebar from "../components/Sidebar.astro";
 import Server from "../components/overview/Server.astro";
 import Parameter from "../components/operation/Parameter.astro";
@@ -24,149 +29,149 @@ import ResponseExamples from "../components/ResponseExamples.astro";
   <Header slot="header" />
 
   <Sidebar slot="sidebar">
-    <OperationItemGroup summary="Articles" slot="operations">
-      <OperationItem
-        method="get"
-        url="#operation_articles_get"
-        summary="Get recent articles globally"
-      />
-      <OperationItem
-        method="post"
-        url="#operation_articles_post"
-        summary="Create an article"
-      />
-      <OperationItem
-        method="get"
-        url="#operation_article_get"
-        summary="Get an article"
-      />
-      <OperationItem
-        method="put"
-        url="#operation_article_update"
-        summary="Update an article"
-      />
-      <OperationItem
-        method="delete"
-        url="#operation_article_delete"
-        summary="Delete an article"
-      />
-      <OperationItem
-        method="get"
-        url="#operation_article_feed"
-        summary="Get recent articles from users you follow"
-      />
-    </OperationItemGroup>
-    <OperationItemGroup summary="Comments" slot="operations">
-      <OperationItem
-        method="get"
-        url="#operation_comments_get"
-        summary="Get comments for an article"
-      />
-      <OperationItem
-        method="post"
-        url="#operation_comment_create"
-        summary="Create a comment"
-      />
-      <OperationItem
-        method="delete"
-        url="#operation_comment_delete"
-        summary="Delete a comment"
-      />
-    </OperationItemGroup>
-    <OperationItemGroup summary="Favorite" slot="operations">
-      <OperationItem
-        method="post"
-        url="#operation_article_favorite"
-        summary="Favorite an article"
-      />
-      <OperationItem
-        method="delete"
-        url="#operation_article_unfavorite"
-        summary="Unfavorite an article"
-      />
-    </OperationItemGroup>
-    <OperationItemGroup summary="Profiles" slot="operations">
-      <OperationItem
-        method="get"
-        url="#operation_profile_get"
-        summary="Get a profile"
-      />
-      <OperationItem
-        method="post"
-        url="#operation_profile_follow"
-        summary="Follow a user"
-      />
-      <OperationItem
-        method="delete"
-        url="#operation_profile_unfollow"
-        summary="Unfollow a user"
-      />
-    </OperationItemGroup>
-    <OperationItemGroup summary="Tags" slot="operations">
-      <OperationItem
-        method="get"
-        url="#operation_tag_list"
-        summary="Get tags"
-      />
-    </OperationItemGroup>
-    <OperationItemGroup summary="User and Authentication" slot="operations">
-      <OperationItem
-        method="post"
-        url="#operation_user_register"
-        summary="Register a user"
-      />
-      <OperationItem
-        method="post"
-        url="#operation_user_login"
-        summary="Login a user"
-      />
-      <OperationItem
-        method="get"
-        url="#operation_current_user_get"
-        summary="Get current user"
-      />
-      <OperationItem
-        method="put"
-        url="#operation_current_user_update"
-        summary="Update current user"
-      />
-    </OperationItemGroup>
+    <OverviewItem href="#overview" />
 
-    <ResourceItem title="Article" url="#resource_article" slot="resource" />
-    <ResourceItem title="Comment" url="#resource_comment" slot="resource" />
-    <ResourceItem
-      title="GenericErrorModel"
-      url="#resource_generic_error_model"
-      slot="resource"
-    />
-    <ResourceItem
-      title="LoginUser"
-      url="#resource_login_user"
-      slot="resource"
-    />
-    <ResourceItem
-      title="NewArticle"
-      url="#resource_new_article"
-      slot="resource"
-    />
-    <ResourceItem
-      title="NewComment"
-      url="#resource_new_comment"
-      slot="resource"
-    />
-    <ResourceItem title="NewUser" url="#resource_new_user" slot="resource" />
-    <ResourceItem title="Profile" url="#resource_profile" slot="resource" />
-    <ResourceItem
-      title="UpdateArticle"
-      url="#resource_update_article"
-      slot="resource"
-    />
-    <ResourceItem
-      title="UpdateUser"
-      url="#resource_update_user"
-      slot="resource"
-    />
-    <ResourceItem title="User" url="#resource_user" slot="resource" />
+    <CustomItemGroup text="Guides">
+      <CustomItem
+        text="Authorization"
+        href="https://www.example.com/authorization"
+        nested
+      />
+      <CustomItem
+        text="Versioning"
+        href="https://www.example.com/versioning"
+        nested
+      />
+    </CustomItemGroup>
+
+    <OperationsWrapper>
+      <OperationItemGroup summary="Articles">
+        <OperationItem
+          method="get"
+          url="#operation_articles_get"
+          summary="Get recent articles globally"
+        />
+        <OperationItem
+          method="post"
+          url="#operation_articles_post"
+          summary="Create an article"
+        />
+        <OperationItem
+          method="get"
+          url="#operation_article_get"
+          summary="Get an article"
+        />
+        <OperationItem
+          method="put"
+          url="#operation_article_update"
+          summary="Update an article"
+        />
+        <OperationItem
+          method="delete"
+          url="#operation_article_delete"
+          summary="Delete an article"
+        />
+        <OperationItem
+          method="get"
+          url="#operation_article_feed"
+          summary="Get recent articles from users you follow"
+        />
+      </OperationItemGroup>
+      <OperationItemGroup summary="Comments">
+        <OperationItem
+          method="get"
+          url="#operation_comments_get"
+          summary="Get comments for an article"
+        />
+        <OperationItem
+          method="post"
+          url="#operation_comment_create"
+          summary="Create a comment"
+        />
+        <OperationItem
+          method="delete"
+          url="#operation_comment_delete"
+          summary="Delete a comment"
+        />
+      </OperationItemGroup>
+      <OperationItemGroup summary="Favorite">
+        <OperationItem
+          method="post"
+          url="#operation_article_favorite"
+          summary="Favorite an article"
+        />
+        <OperationItem
+          method="delete"
+          url="#operation_article_unfavorite"
+          summary="Unfavorite an article"
+        />
+      </OperationItemGroup>
+      <OperationItemGroup summary="Profiles">
+        <OperationItem
+          method="get"
+          url="#operation_profile_get"
+          summary="Get a profile"
+        />
+        <OperationItem
+          method="post"
+          url="#operation_profile_follow"
+          summary="Follow a user"
+        />
+        <OperationItem
+          method="delete"
+          url="#operation_profile_unfollow"
+          summary="Unfollow a user"
+        />
+      </OperationItemGroup>
+      <OperationItemGroup summary="Tags">
+        <OperationItem
+          method="get"
+          url="#operation_tag_list"
+          summary="Get tags"
+        />
+      </OperationItemGroup>
+      <OperationItemGroup summary="User and Authentication">
+        <OperationItem
+          method="post"
+          url="#operation_user_register"
+          summary="Register a user"
+        />
+        <OperationItem
+          method="post"
+          url="#operation_user_login"
+          summary="Login a user"
+        />
+        <OperationItem
+          method="get"
+          url="#operation_current_user_get"
+          summary="Get current user"
+        />
+        <OperationItem
+          method="put"
+          url="#operation_current_user_update"
+          summary="Update current user"
+        />
+      </OperationItemGroup>
+    </OperationsWrapper>
+
+    <ResourcesWrapper>
+      <ResourceItem title="Article" url="#resource_article" />
+      <ResourceItem title="Comment" url="#resource_comment" />
+      <ResourceItem
+        title="GenericErrorModel"
+        url="#resource_generic_error_model"
+      />
+      <ResourceItem title="LoginUser" url="#resource_login_user" />
+      <ResourceItem title="NewArticle" url="#resource_new_article" />
+      <ResourceItem title="NewComment" url="#resource_new_comment" />
+      <ResourceItem title="NewUser" url="#resource_new_user" />
+      <ResourceItem title="Profile" url="#resource_profile" />
+      <ResourceItem title="UpdateArticle" url="#resource_update_article" />
+      <ResourceItem title="UpdateUser" url="#resource_update_user" />
+      <ResourceItem title="User" url="#resource_user" />
+    </ResourcesWrapper>
+
+    <CustomItem text="Changelog" href="https://www.example.com/changelog" />
   </Sidebar>
 
   <Overview>

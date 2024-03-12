@@ -1,0 +1,25 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  text: string;
+  href: string;
+  nested?: boolean;
+}
+
+const { text, href, nested } = Astro.props;
+
+let external = false;
+try {
+  external = new URL(href).hostname !== "localhost";
+} catch (e) {
+  // URL is relative === internal
+}
+---
+
+<div class:list={["py-1 item", nested ? "text-sm" : "text-xl"]}>
+  <a href={href} target={external ? "_blank" : "_self"}>
+    <span>{text}</span>
+    {external && <Icon name="external-link" size={16} class="inline" />}
+  </a>
+</div>
