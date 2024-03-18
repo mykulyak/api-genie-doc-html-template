@@ -22,7 +22,7 @@ const { method, url } = Astro.props;
         JavaScript (vanilla)
       </li>
     </ul>
-    <button aria-label="Copy" class="p-2">
+    <button aria-label="Copy" class="p-2" data-copy-trigger>
       <Icon name="copy" size={16} />
     </button>
   </div>
@@ -33,38 +33,6 @@ const { method, url } = Astro.props;
 </div>
 
 <script>
-  function domCopy(text: string) {
-    let n = document.createElement("pre");
-    Object.assign(n.style, {
-      opacity: "0",
-      pointerEvents: "none",
-      position: "absolute",
-      overflow: "hidden",
-      left: "0",
-      top: "0",
-      width: "20px",
-      height: "20px",
-      webkitUserSelect: "auto",
-      userSelect: "all",
-    });
-    n.ariaHidden = "true";
-    n.textContent = text;
-    document.body.appendChild(n);
-    let r = document.createRange();
-    r.selectNode(n);
-    const s = getSelection()!;
-    s.removeAllRanges();
-    s.addRange(r);
-    let ok = false;
-    try {
-      ok = document.execCommand("copy");
-    } finally {
-      s.removeAllRanges();
-      document.body.removeChild(n);
-    }
-    return ok;
-  }
-
   document.addEventListener("click", async (event: MouseEvent) => {
     const elem = event.target as HTMLElement;
     if (elem.matches("li[data-tab]")) {
@@ -83,27 +51,27 @@ const { method, url } = Astro.props;
         });
       }
     }
-    const button = elem.closest("button[aria-label=Copy]");
-    if (button) {
-      const root = elem.closest("div[data-current]") as HTMLElement;
+  });
+</script>
+
+<script>
+  import ClipboardJS from "clipboard";
+
+  new ClipboardJS("[data-copy-trigger]", {
+    text: (trigger) => {
+      let result = "";
+
+      const root = trigger.closest("div[data-current]") as HTMLElement;
       if (root) {
         const codeElem = root.querySelector(
           "[data-pane=" + root.dataset.current + "]"
         ) as HTMLElement;
         if (codeElem) {
-          let ok = false;
-          try {
-            await navigator.clipboard.writeText(codeElem.innerText);
-            ok = true;
-          } catch (err) {
-            ok = domCopy(codeElem.innerText);
-          }
-          if (ok) {
-            // FIXME show a tooptip
-            alert("Copied to clipboard");
-          }
+          result = codeElem.textContent || "";
         }
       }
-    }
+
+      return result;
+    },
   });
 </script>
