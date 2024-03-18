@@ -1,0 +1,1 @@
+declare module '@mykulyak/api-genie-doc-html-template/astro.config.mjs';

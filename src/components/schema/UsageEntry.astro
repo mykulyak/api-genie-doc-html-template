@@ -1,0 +1,10 @@
+---
+interface Props {
+    href: string;
+    label: string;
+}
+
+const { href, label }: Props = Astro.props;
+---
+
+<li><a href={href}>{label}</a></li>

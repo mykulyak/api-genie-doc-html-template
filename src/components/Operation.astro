@@ -11,20 +11,14 @@ interface Props {
   deprecated?: boolean;
 }
 
-const {
-  id,
-  operationId,
-  method,
-  path,
-  summary,
-  deprecated,
-} = Astro.props;
+const { id, operationId, method, path, summary, deprecated } = Astro.props;
 
 const hasHeaderParams = Astro.slots.has("header_parameters");
 const hasPathParams = Astro.slots.has("path_parameters");
 const hasQueryParams = Astro.slots.has("query_parameters");
 const hasCookieParams = Astro.slots.has("cookie_parameters");
-const hasParams = hasHeaderParams || hasPathParams || hasQueryParams || hasCookieParams;
+const hasParams =
+  hasHeaderParams || hasPathParams || hasQueryParams || hasCookieParams;
 ---
 
 <div id={id} class="mb-5 flex gap-4">
@@ -35,12 +29,14 @@ const hasParams = hasHeaderParams || hasPathParams || hasQueryParams || hasCooki
         <Icon name="link" class="inline-block text-slate-400" />
       </a>
     </h3>
-    {deprecated && (
-      <div class="text-sm mb-1 text-yellow-600">
-        <Icon name="warning" class="inline-block mr-1" size={24} />
-        Deprecated
-      </div>
-    )}
+    {
+      deprecated && (
+        <div class="text-sm mb-1 text-yellow-600">
+          <Icon name="warning" class="inline-block mr-1" size={24} />
+          Deprecated
+        </div>
+      )
+    }
     {operationId && <div class="text-sm mb-1 font-mono">{operationId}</div>}
     <div class="mb-1">
       <span class="font-bold font-mono uppercase">{method}</span>
@@ -58,19 +54,40 @@ const hasParams = hasHeaderParams || hasPathParams || hasQueryParams || hasCooki
         </h4>
       )
     }
-    {hasHeaderParams && <h5 class="font-bold text-lg mb-2">Header parameters</h5>}
+    {
+      hasHeaderParams && (
+        <h5 class="font-bold text-lg mb-2">Header parameters</h5>
+      )
+    }
     <slot name="header_parameters" />
     {hasPathParams && <h5 class="font-bold text-lg mb-2">Path parameters</h5>}
     <slot name="path_parameters" />
     {hasQueryParams && <h5 class="font-bold text-lg mb-2">Query parameters</h5>}
     <slot name="query_parameters" />
-    {hasCookieParams && <h5 class="font-bold text-lg mb-2">Cookie parameters</h5>}
+    {
+      hasCookieParams && (
+        <h5 class="font-bold text-lg mb-2">Cookie parameters</h5>
+      )
+    }
     <slot name="cookie_parameters" />
 
-    {Astro.slots.has("request_body") && <h4 class="text-xl font-bold mt-4 mb-2">Request body</h4>}
+    {
+      Astro.slots.has("request_body") && (
+        <h4 class="text-xl font-bold mt-4 mb-2">Request body</h4>
+      )
+    }
     <slot name="request_body" />
 
     <slot name="responses" />
+
+    {
+      Astro.slots.has("usages") && (
+        <div class="mt-3">
+          <h3 class="text-2xl font-bold mb-2">Used resources</h3>
+          <slot name="usages" />
+        </div>
+      )
+    }
   </div>
   <div class="basis-[40%] grow-4">
     <div class="sticky top-4">
