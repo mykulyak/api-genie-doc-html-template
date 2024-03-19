@@ -1,30 +1,20 @@
 ---
-interface Props {}
+export interface Props {
+  options: Array<{
+    label: string;
+    href: string;
+  }>;
+  value: string;
+}
 
-const locales = [
-  {
-    locale: "en",
-    label: "🇬🇧 English",
-    href: '/en',
-  },
-  {
-    locale: "pl",
-    label: "🇵🇱 Polish",
-    href: '/pl',
-  },
-  {
-    locale: "ua",
-    label: "🇺🇦 Ukrainian",
-    href: '/ua',
-  },
-];
+const { options, value } = Astro.props;
 ---
 
 <api-genie-locale-selector>
   <select>
     {
-      locales.map((locale) => (
-        <option value={locale.locale}>{locale.label}</option>
+      options.map((option) => (
+        <option value={option.href} selected={option.href == value}>{option.label}</option>
       ))
     }
   </select>
@@ -36,9 +26,11 @@ const locales = [
       super();
       const selectEl = this.querySelector("select");
       if (selectEl) {
-        console.log(Astro.props);
         selectEl.addEventListener("change", (event) => {
           console.log(event);
+          if (event.currentTarget instanceof HTMLSelectElement) {
+            window.location.href = event.currentTarget.value;
+          }
         });
       }
     }

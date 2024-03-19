@@ -5,9 +5,20 @@ import SearchField from "./header/SearchField.astro";
 
 interface Props {
   class?: string;
+  i18n?: {
+    options: Array<{
+      label: string;
+      href: string;
+    }>;
+    value: string;
+  };
 }
 
-const { class: className } = Astro.props;
+const { class: className, i18n } = Astro.props;
+
+const isMultiLocale = i18n && i18n.options.length > 1;
+const locales = isMultiLocale ? i18n.options : [];
+const currentHref = isMultiLocale ? i18n.value : '';
 ---
 
 <header
@@ -29,6 +40,8 @@ const { class: className } = Astro.props;
   <SearchField />
   <div>
     <ThemeSelector />
-    <LocaleSelector />
+    {isMultiLocale && (
+      <LocaleSelector options={locales} value={currentHref} />
+    )}
   </div>
 </header>
