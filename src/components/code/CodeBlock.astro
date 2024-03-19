@@ -21,7 +21,7 @@ const { language = "plaintext", theme = "github-dark" } = Astro.props;
 const highligher = await getHighlighter({ themes: [theme], langs: [language] });
 const bgColor = highligher.getTheme(theme).bg;
 const rawCode = await Astro.slots.render("default");
-const code = rawCode.replaceAll('&lcub;', '{').replaceAll('&rcub;', '}');
+const code = (rawCode || '').replaceAll('&lcub;', '{').replaceAll('&rcub;', '}');
 ---
 
 <div class="p-2 text-xs" style={`background-color: ${bgColor}`}>
