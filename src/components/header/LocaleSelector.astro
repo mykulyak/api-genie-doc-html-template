@@ -29,7 +29,13 @@ const { options, value } = Astro.props;
         selectEl.addEventListener("change", (event) => {
           console.log(event);
           if (event.currentTarget instanceof HTMLSelectElement) {
-            window.location.href = event.currentTarget.value;
+            try {
+              const url = new URL(event.currentTarget.value, window.location.origin);
+              url.hash = window.location.hash;
+              window.location.href = url.toString();
+            } catch (err) {
+              window.location.href = event.currentTarget.value;
+            }
           }
         });
       }
