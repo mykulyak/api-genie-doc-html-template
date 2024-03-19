@@ -1,5 +1,6 @@
 ---
 import ThemeSelector from "./header/ThemeSelector.astro";
+import LocaleSelector from "./header/LocaleSelector.astro";
 import SearchField from "./header/SearchField.astro";
 
 interface Props {
@@ -28,5 +29,6 @@ const { class: className } = Astro.props;
   <SearchField />
   <div>
     <ThemeSelector />
+    <LocaleSelector />
   </div>
 </header>

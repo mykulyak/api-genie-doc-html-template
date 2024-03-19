@@ -1,0 +1,48 @@
+---
+interface Props {}
+
+const locales = [
+  {
+    locale: "en",
+    label: "🇬🇧 English",
+    href: '/en',
+  },
+  {
+    locale: "pl",
+    label: "🇵🇱 Polish",
+    href: '/pl',
+  },
+  {
+    locale: "ua",
+    label: "🇺🇦 Ukrainian",
+    href: '/ua',
+  },
+];
+---
+
+<api-genie-locale-selector>
+  <select>
+    {
+      locales.map((locale) => (
+        <option value={locale.locale}>{locale.label}</option>
+      ))
+    }
+  </select>
+</api-genie-locale-selector>
+
+<script>
+  class LocaleSelector extends HTMLElement {
+    constructor() {
+      super();
+      const selectEl = this.querySelector("select");
+      if (selectEl) {
+        console.log(Astro.props);
+        selectEl.addEventListener("change", (event) => {
+          console.log(event);
+        });
+      }
+    }
+  }
+
+  customElements.define("api-genie-locale-selector", LocaleSelector);
+</script>
