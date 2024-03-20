@@ -1,9 +1,11 @@
 ---
+import { useTranslation } from "../i18n";
 
+const __ = useTranslation(Astro.url);
 ---
 
 <div class="min-w-[200px] max-w-[300px] border border-sky-600 mt-4">
-  <h4 class="font-bold">Response examples</h4>
+  <h4 class="font-bold">{__('responseExample.header')}</h4>
   <div class="max-h-[300px] overflow-y-scroll">
     <slot />
   </div>

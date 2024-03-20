@@ -2,6 +2,7 @@
 import ThemeSelector from "./header/ThemeSelector.astro";
 import LocaleSelector from "./header/LocaleSelector.astro";
 import SearchField from "./header/SearchField.astro";
+import { useTranslation } from "../i18n";
 
 interface Props {
   class?: string;
@@ -18,7 +19,9 @@ const { class: className, i18n } = Astro.props;
 
 const isMultiLocale = i18n && i18n.options.length > 1;
 const locales = isMultiLocale ? i18n.options : [];
-const currentHref = isMultiLocale ? i18n.value : '';
+const currentHref = isMultiLocale ? i18n.value : "";
+
+const __ = useTranslation(Astro.url);
 ---
 
 <header
@@ -35,13 +38,11 @@ const currentHref = isMultiLocale ? i18n.value : '';
   ]}
 >
   <nav>
-    <h1 class="text-xl">RealWorld Conduit API</h1>
+    <h1 class="text-xl"><slot name="title" /></h1>
   </nav>
   <SearchField />
   <div>
     <ThemeSelector />
-    {isMultiLocale && (
-      <LocaleSelector options={locales} value={currentHref} />
-    )}
+    {isMultiLocale && <LocaleSelector options={locales} value={currentHref} />}
   </div>
 </header>

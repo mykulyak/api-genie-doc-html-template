@@ -1,6 +1,7 @@
 ---
 import { Icon } from "astro-icon/components";
-import KVPair from './KVPair.astro';
+import KVPair from "./KVPair.astro";
+import { useTranslation } from "../../i18n";
 
 interface Props {
   name: string;
@@ -54,13 +55,19 @@ const hasLimits =
   maxItems != null ||
   minProperties != null ||
   maxProperties != null;
+
+const __ = useTranslation(Astro.url);
 ---
 
 <div class="py-3 border-t-[1px] flex flex-col gap-2">
   <div>
     <span class="font-bold bg-slate-200 py-1 px-2 rounded-[4px]">{name}</span>
     <span class="text-slate-500 ml-2">{type}</span>
-    {required && <span class="text-red-800 ml-2">required</span>}
+    {
+      required && (
+        <span class="text-red-800 ml-2">{__("property.required")}</span>
+      )
+    }
   </div>
 
   {
@@ -74,21 +81,41 @@ const hasLimits =
   {
     hasLimits && (
       <div class="flex gap-2">
-        {minimum != null && <KVPair title="Minimum" value={minimum} />}
-        {maximum != null && <KVPair title="Maximum" value={maximum} />}
-        {multipleOf != null && <KVPair title="Multiple of" value={multipleOf} />}
-        {minLength != null && <KVPair title="Minimum length" value={minLength} />}
-        {maxLength != null && <KVPair title="Maximum length" value={maxLength} />}
-        {minItems != null && <KVPair title="Minimal length" value={minItems} />}
-        {maxItems != null && <KVPair title="Maximum length" value={maxItems} />}
-        {minProperties != null && <KVPair title="Minimal property count" value={minProperties} />}
-        {maxProperties != null && <KVPair title="Maximum property count" value={maxProperties} />}
-        {allowedValues != null && allowedValues.length > 0 && <KVPair title="Allowed values" value={allowedValues} />}
+        {minimum != null && (
+          <KVPair title={__("kvpair.minimum")} value={minimum} />
+        )}
+        {maximum != null && (
+          <KVPair title={__("kvpair.maximum")} value={maximum} />
+        )}
+        {multipleOf != null && (
+          <KVPair title={__("kvpair.multipleOf")} value={multipleOf} />
+        )}
+        {minLength != null && (
+          <KVPair title={__("kvpair.minLength")} value={minLength} />
+        )}
+        {maxLength != null && (
+          <KVPair title={__("kvpair.maxLength")} value={maxLength} />
+        )}
+        {minItems != null && (
+          <KVPair title={__("kvpair.minItems")} value={minItems} />
+        )}
+        {maxItems != null && (
+          <KVPair title={__("kvpair.maxItems")} value={maxItems} />
+        )}
+        {minProperties != null && (
+          <KVPair title={__("kvpair.minProperties")} value={minProperties} />
+        )}
+        {maxProperties != null && (
+          <KVPair title={__("kvpair.maxProperties")} value={maxProperties} />
+        )}
+        {allowedValues != null && allowedValues.length > 0 && (
+          <KVPair title={__("kvpair.allowedValues")} value={allowedValues} />
+        )}
       </div>
     )
   }
 
-  {example != null && <KVPair title="Example" value={example} />}
+  {example != null && <KVPair title={__('kvpair.example')} value={example} />}
 
   {
     hasChildren && (
@@ -97,7 +124,7 @@ const hasLimits =
           <span class="rotate-180 inline-block" data-toggle="chevron">
             <Icon name="chevron-up" size={16} />
           </span>
-          <span>Show children</span>
+          <span>{__('property.showChildren')}</span>
         </div>
         <div class="hidden pl-4" data-toggle="target">
           <slot />

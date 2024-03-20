@@ -1,9 +1,15 @@
+---
+import { useTranslation } from "../../i18n";
+
+const __ = useTranslation(Astro.url);
+---
+
 <div class="flex-0 flex border-2 border-red-500 border-solid">
   <input
     type="text"
-    placeholder="Search"
+    placeholder={__("searchField.placeholder")}
     name="q"
     class="bg-transparent focus:outline-none w-80"
   />
-  <div>Search</div>
+  <div>{__("searchField.title")}</div>
 </div>

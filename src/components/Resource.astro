@@ -1,6 +1,7 @@
 ---
 import { Icon } from "astro-icon/components";
 import KVPair from "./schema/KVPair.astro";
+import { useTranslation } from "../i18n";
 
 interface Props {
   id: string;
@@ -50,6 +51,8 @@ const hasLimits =
   maxItems != null ||
   minProperties != null ||
   maxProperties != null;
+
+const __ = useTranslation(Astro.url);
 ---
 
 <div class="mb-8" id={id}>
@@ -72,27 +75,35 @@ const hasLimits =
   {
     hasLimits && (
       <div class="flex gap-2">
-        {minimum != null && <KVPair title="Minimum" value={minimum} />}
-        {maximum != null && <KVPair title="Maximum" value={maximum} />}
+        {minimum != null && (
+          <KVPair title={__("kvpair.minimum")} value={minimum} />
+        )}
+        {maximum != null && (
+          <KVPair title={__("kvpair.maximum")} value={maximum} />
+        )}
         {multipleOf != null && (
-          <KVPair title="Multiple of" value={multipleOf} />
+          <KVPair title={__("kvpair.multipleOf")} value={multipleOf} />
         )}
         {minLength != null && (
-          <KVPair title="Minimum length" value={minLength} />
+          <KVPair title={__("kvpair.minLength")} value={minLength} />
         )}
         {maxLength != null && (
-          <KVPair title="Maximum length" value={maxLength} />
+          <KVPair title={__("kvpair.maxLength")} value={maxLength} />
         )}
-        {minItems != null && <KVPair title="Minimal length" value={minItems} />}
-        {maxItems != null && <KVPair title="Maximum length" value={maxItems} />}
+        {minItems != null && (
+          <KVPair title={__("kvpair.minItems")} value={minItems} />
+        )}
+        {maxItems != null && (
+          <KVPair title={__("kvpair.maxItems")} value={maxItems} />
+        )}
         {minProperties != null && (
-          <KVPair title="Minimal property count" value={minProperties} />
+          <KVPair title={__("kvpair.minProperties")} value={minProperties} />
         )}
         {maxProperties != null && (
-          <KVPair title="Maximum property count" value={maxProperties} />
+          <KVPair title={__("kvpair.maxProperties")} value={maxProperties} />
         )}
         {allowedValues != null && allowedValues.length > 0 && (
-          <KVPair title="Allowed values" value={allowedValues} />
+          <KVPair title={__("kvpair.allowedValues")} value={allowedValues} />
         )}
       </div>
     )
@@ -100,12 +111,14 @@ const hasLimits =
 
   <slot name="properties" />
 
-  {Astro.slots.has("usages") && (
-    <div class="mt-3">
-      <h3 class="text-2xl font-bold mb-2">Used in operations</h3>
-      <slot name="usages" />
-    </div>
-  )}
+  {
+    Astro.slots.has("usages") && (
+      <div class="mt-3">
+        <h3 class="text-2xl font-bold mb-2">{__("resource.sections.usage")}</h3>
+        <slot name="usages" />
+      </div>
+    )
+  }
 </div>
 
 <style>

@@ -1,9 +1,14 @@
 ---
+import { useTranslation } from "../../i18n";
+
 interface Props {
   href: string;
 }
 
 const { href } = Astro.props;
+const __ = useTranslation(Astro.url);
 ---
 
-<div class="flex-none py-1 text-xl"><a href={href}>Overview</a></div>
+<div class="flex-none py-1 text-xl">
+  <a href={href}>{__("sidebar.overview.title")}</a>
+</div>

@@ -1,9 +1,11 @@
 ---
+import { useTranslation } from "../../i18n";
 
+const __ = useTranslation(Astro.url);
 ---
 
 <div>
   <slot>
-    <span>This resource is not used anywhere.</span>
+    <span>{__('resource.usage.empty')}</span>
   </slot>
 </div>

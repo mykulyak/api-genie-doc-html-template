@@ -1,19 +1,22 @@
 ---
+import { useTranslation } from "../i18n";
+
 interface Props {
   allowedMethods?: string[];
 }
 
 const { allowedMethods = [] } = Astro.props;
+const __ = useTranslation(Astro.url);
 ---
 
 <form name="search" method="get" action="#">
-  <label>Method</label>
+  <label>{__("searchForm.method.label")}</label>
   <div>
     {
       allowedMethods.includes("GET") && (
         <span>
           <input type="checkbox" name="method" value="GET" id="method-get" />
-          <label for="method-get">GET</label>
+          <label for="method-get">{__("searchForm.get.label")}</label>
         </span>
       )
     }
@@ -21,7 +24,7 @@ const { allowedMethods = [] } = Astro.props;
       allowedMethods.includes("POST") && (
         <span>
           <input type="checkbox" name="method" value="POST" id="method-post" />
-          <label for="method-post">POST</label>
+          <label for="method-post">{__("searchForm.post.label")}</label>
         </span>
       )
     }
@@ -29,7 +32,7 @@ const { allowedMethods = [] } = Astro.props;
       allowedMethods.includes("PUT") && (
         <span>
           <input type="checkbox" name="method" value="PUT" id="method-put" />
-          <label for="method-put">PUT</label>
+          <label for="method-put">{__("searchForm.put.label")}</label>
         </span>
       )
     }
@@ -42,7 +45,7 @@ const { allowedMethods = [] } = Astro.props;
             value="DELETE"
             id="method-delete"
           />
-          <label for="method-delete">DELETE</label>
+          <label for="method-delete">{__("searchForm.delete.label")}</label>
         </span>
       )
     }
@@ -55,7 +58,7 @@ const { allowedMethods = [] } = Astro.props;
             value="PATCH"
             id="method-patch"
           />
-          <label for="method-patch">PATCH</label>
+          <label for="method-patch">{__("searchForm.patch.label")}</label>
         </span>
       )
     }
@@ -68,7 +71,7 @@ const { allowedMethods = [] } = Astro.props;
             value="OPTIONS"
             id="method-options"
           />
-          <label for="method-options">OPTIONS</label>
+          <label for="method-options">{__("searchForm.options.label")}</label>
         </span>
       )
     }
@@ -76,7 +79,7 @@ const { allowedMethods = [] } = Astro.props;
       allowedMethods.includes("HEAD") && (
         <span>
           <input type="checkbox" name="method" value="HEAD" id="method-head" />
-          <label for="method-head">HEAD</label>
+          <label for="method-head">{__("searchForm.head.label")}</label>
         </span>
       )
     }
@@ -89,17 +92,21 @@ const { allowedMethods = [] } = Astro.props;
             value="TRACE"
             id="method-trace"
           />
-          <label for="method-trace">TRACE</label>
+          <label for="method-trace">{__("searchForm.trace.label")}</label>
         </span>
       )
     }
   </div>
 
-  <label>URL</label>
-  <input type="text" name="url" placeholder="Type 3 or more characters..." />
+  <label>{__("searchForm.url.label")}</label>
+  <input
+    type="text"
+    name="url"
+    placeholder={__("searchForm.url.placeholder")}
+  />
 
   <button type="submit" class="bg-blue-700 px-3 py-1 rounded text-white"
-    >Search</button
+    >{__("searchForm.button")}</button
   >
 </form>
 

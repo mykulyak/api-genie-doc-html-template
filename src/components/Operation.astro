@@ -1,6 +1,7 @@
 ---
 import { Icon } from "astro-icon/components";
 import MarkdownBlock from "./MarkdownBlock.astro";
+import { useTranslation } from "../i18n";
 
 interface Props {
   id: string;
@@ -19,6 +20,8 @@ const hasQueryParams = Astro.slots.has("query_parameters");
 const hasCookieParams = Astro.slots.has("cookie_parameters");
 const hasParams =
   hasHeaderParams || hasPathParams || hasQueryParams || hasCookieParams;
+
+const __ = useTranslation(Astro.url);
 ---
 
 <div id={id} class="mb-5 flex gap-4">
@@ -33,7 +36,7 @@ const hasParams =
       deprecated && (
         <div class="text-sm mb-1 text-yellow-600">
           <Icon name="warning" class="inline-block mr-1" size={24} />
-          Deprecated
+          {__("operation.deprecated")}
         </div>
       )
     }
@@ -50,30 +53,48 @@ const hasParams =
     {
       hasParams && (
         <h4 id={`#${id}__params`} class="text-xl font-bold mt-4 mb-2">
-          <a href={`#${id}__params`}>Parameters</a>
+          <a href={`#${id}__params`}>{__("operation.sections.parameters")}</a>
         </h4>
       )
     }
     {
       hasHeaderParams && (
-        <h5 class="font-bold text-lg mb-2">Header parameters</h5>
+        <h5 class="font-bold text-lg mb-2">
+          {__("operation.sections.headerParameters")}
+        </h5>
       )
     }
     <slot name="header_parameters" />
-    {hasPathParams && <h5 class="font-bold text-lg mb-2">Path parameters</h5>}
+    {
+      hasPathParams && (
+        <h5 class="font-bold text-lg mb-2">
+          {__("operation.sections.pathParameters")}
+        </h5>
+      )
+    }
     <slot name="path_parameters" />
-    {hasQueryParams && <h5 class="font-bold text-lg mb-2">Query parameters</h5>}
+    {
+      hasQueryParams && (
+        <h5 class="font-bold text-lg mb-2">
+          {__("operation.sections.queryParameters")}
+        </h5>
+      )
+    }
     <slot name="query_parameters" />
     {
       hasCookieParams && (
-        <h5 class="font-bold text-lg mb-2">Cookie parameters</h5>
+        <h5 class="font-bold text-lg mb-2">
+          {__("operation.sections.cookieParameters")}
+        </h5>
       )
     }
     <slot name="cookie_parameters" />
 
     {
       Astro.slots.has("request_body") && (
-        <h4 class="text-xl font-bold mt-4 mb-2">Request body</h4>
+        <h4 class="text-xl font-bold mt-4 mb-2">
+          {__("operation.sections.requestBody")}
+        </h4>
       )
     }
     <slot name="request_body" />
@@ -83,7 +104,7 @@ const hasParams =
     {
       Astro.slots.has("usages") && (
         <div class="mt-3">
-          <h3 class="text-2xl font-bold mb-2">Used resources</h3>
+          <h3 class="text-2xl font-bold mb-2">{__('operation.sections.usage')}</h3>
           <slot name="usages" />
         </div>
       )

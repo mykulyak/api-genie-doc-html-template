@@ -1,11 +1,13 @@
 ---
+import { useTranslation } from "../../i18n";
 
+const __ = useTranslation(Astro.url);
 ---
 
 <div>
-  <button>Theme</button>
+  <button>{__("themeSelector.title")}</button>
   <ul class="hidden">
-    <li>Light</li>
-    <li>Dark</li>
+    <li>{__("themeSelector.light")}</li>
+    <li>{__("themeSelector.dark")}</li>
   </ul>
 </div>

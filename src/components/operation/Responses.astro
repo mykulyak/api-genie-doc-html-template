@@ -1,10 +1,16 @@
+---
+import { useTranslation } from "../../i18n";
+
+const __ = useTranslation(Astro.url);
+---
+
 <div>
-  <h3 class="text-lg font-bold mb-2">Response codes</h3>
+  <h3 class="text-lg font-bold mb-2">{__("responses.title")}</h3>
   <table>
     <thead>
       <tr>
-        <th>Status code</th>
-        <th>Description</th>
+        <th>{__("responses.statusCode")}</th>
+        <th>{__("responses.description")}</th>
       </tr>
     </thead>
     <tbody>

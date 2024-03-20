@@ -1,5 +1,6 @@
 ---
 import { Icon } from "astro-icon/components";
+import { useTranslation } from "../i18n";
 
 interface Props {
   method: string;
@@ -7,20 +8,20 @@ interface Props {
 }
 
 const { method, url } = Astro.props;
+
+const __ = useTranslation(Astro.url);
 ---
 
 <div class="min-w-50 border border-sky-600" data-current="curl">
-  <h4 class="font-bold">Request code</h4>
+  <h4 class="font-bold">{__('requestExample.header')}</h4>
   <div class="mb-1">
     <span class="font-bold font-mono uppercase">{method}</span>
     <span class="ml-1 font-mono">{url}</span>
   </div>
   <div class="flex justify-between">
     <ul class="list-none p-1">
-      <li data-tab="curl" class="inline mr-2 cursor-pointer pressed">cURL</li>
-      <li data-tab="vanilla_js" class="inline mx-2 cursor-pointer">
-        JavaScript (vanilla)
-      </li>
+      <li data-tab="curl" class="inline mr-2 cursor-pointer pressed">{__('requestExample.tabs.curl')}</li>
+      <li data-tab="vanilla_js" class="inline mx-2 cursor-pointer">{__('requestExample.tabs.vanillaJs')}</li>
     </ul>
     <button aria-label="Copy" class="p-2" data-copy-trigger>
       <Icon name="copy" size={16} />

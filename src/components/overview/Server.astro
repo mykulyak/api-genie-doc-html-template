@@ -1,11 +1,14 @@
 ---
+import { useTranslation } from '../../i18n';
+
 interface Props {
   url: string;
 }
 
 const { url } = Astro.props;
+const __ = useTranslation(Astro.url);
 ---
 
 <div>
-  <span>URL: {url}</span>
+  <span>{__('server.url')}: {url}</span>
 </div>

@@ -1,5 +1,8 @@
 ---
+import { useTranslation } from "../../i18n";
 import { Icon } from "astro-icon/components";
+
+const __ = useTranslation(Astro.url);
 ---
 
 <div data-sidebar-group>
@@ -7,7 +10,7 @@ import { Icon } from "astro-icon/components";
     class="flex justify-between cursor-pointer py-1 text-xl"
     data-sidebar-trigger
   >
-    <span>Resources</span>
+    <span>{__('sidebar.resourcesWrapper.title')}</span>
     <span class="rotate-180" data-sidebar-chevron>
       <Icon name="chevron-up" size={24} />
     </span>

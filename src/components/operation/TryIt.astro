@@ -1,11 +1,17 @@
+---
+import { useTranslation } from "../../i18n";
+
+const __ = useTranslation(Astro.url);
+---
+
 <div class="flex flex-col border-red-100 border-2 border-solid">
   <div>
     <ul class="list-none flex">
-      <li>cURL</li>
-      <li>JavaScript</li>
-      <li>Python</li>
+      <li>{__("tryIt.curl")}</li>
+      <li>{__("tryIt.javascript")}</li>
+      <li>{__("tryIt.python")}</li>
     </ul>
-    <button>Copy</button>
+    <button>{__("tryIt.copy")}</button>
   </div>
   <div data-tab="curl"></div>
   <div data-tab="javascript"></div>
