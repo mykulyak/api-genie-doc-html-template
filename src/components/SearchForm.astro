@@ -6,7 +6,7 @@ interface Props {
 }
 
 const { allowedMethods = [] } = Astro.props;
-const __ = useTranslation(Astro.url);
+const __ = useTranslation(Astro);
 ---
 
 <form name="search" method="get" action="#">

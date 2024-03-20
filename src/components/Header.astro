@@ -21,7 +21,7 @@ const isMultiLocale = i18n && i18n.options.length > 1;
 const locales = isMultiLocale ? i18n.options : [];
 const currentHref = isMultiLocale ? i18n.value : "";
 
-const __ = useTranslation(Astro.url);
+const __ = useTranslation(Astro);
 ---
 
 <header

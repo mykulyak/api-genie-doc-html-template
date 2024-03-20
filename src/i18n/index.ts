@@ -1,8 +1,9 @@
+import type { AstroGlobal } from "astro";
 import en from "./en.json";
 import pl from "./pl.json";
 import ua from "./ua.json";
 
-const defaultLanguage = "en";
+const fallbackLanguage = "en";
 const translations = {
   en,
   pl,
@@ -11,18 +12,26 @@ const translations = {
 
 type TranslationData = typeof translations;
 type SupportedLanguage = keyof TranslationData;
-type TranslationKey = keyof TranslationData[typeof defaultLanguage];
+type TranslationKey = keyof TranslationData[typeof fallbackLanguage];
 type TranslatorFunc = (key: TranslationKey) => string;
 
-export function useTranslation(url: URL): TranslatorFunc {
-  const parts = url.pathname.split("/").filter(Boolean);
-  const candidate = parts[0] || "";
+export function useTranslation(astro: AstroGlobal): TranslatorFunc {
+  let defaultLang: SupportedLanguage = fallbackLanguage;
+  if (
+    astro.locals.i18n?.defaultLocale &&
+    Object.hasOwn(translations, astro.locals.i18n?.defaultLocale)
+  ) {
+    defaultLang = astro.locals.i18n?.defaultLocale as SupportedLanguage;
+  }
 
-  const lang = (
-    Object.hasOwn(translations, candidate) ? candidate : defaultLanguage
-  ) as SupportedLanguage;
+  let lang: SupportedLanguage = defaultLang;
+  const maybeLangFromUrl =
+    astro.url.pathname.split("/").filter(Boolean)[0] || "";
+  if (Object.hasOwn(translations, maybeLangFromUrl)) {
+    lang = maybeLangFromUrl as SupportedLanguage;
+  }
 
   return function t(key: TranslationKey) {
-    return translations[lang][key] || translations[defaultLanguage][key];
+    return translations[lang][key] || translations[defaultLang][key];
   };
 }

@@ -21,7 +21,7 @@ const hasCookieParams = Astro.slots.has("cookie_parameters");
 const hasParams =
   hasHeaderParams || hasPathParams || hasQueryParams || hasCookieParams;
 
-const __ = useTranslation(Astro.url);
+const __ = useTranslation(Astro);
 ---
 
 <div id={id} class="mb-5 flex gap-4">

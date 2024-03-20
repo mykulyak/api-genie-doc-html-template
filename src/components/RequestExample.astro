@@ -9,7 +9,7 @@ interface Props {
 
 const { method, url } = Astro.props;
 
-const __ = useTranslation(Astro.url);
+const __ = useTranslation(Astro);
 ---
 
 <div class="min-w-50 border border-sky-600" data-current="curl">
