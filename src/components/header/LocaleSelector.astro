@@ -1,4 +1,6 @@
 ---
+import localeCode from "iso-639-1";
+
 export interface Props {
   options: Array<{
     label: string;
@@ -8,13 +10,38 @@ export interface Props {
 }
 
 const { options, value } = Astro.props;
+
+const finalOptions = options.map((opt) => {
+  const nativeNameMapping: Record<string, string> = {
+    ua: 'uk',
+  };
+  const nativeName = localeCode.getNativeName(nativeNameMapping[opt.label] || opt.label);
+
+  const flagMapping: Record<string, string> = {
+    en: 'gb',
+  };
+  const flag = flagMapping[opt.label] || opt.label;
+
+  const finalFlag = String.fromCodePoint(
+    ...[...flag.toUpperCase()].map(
+      (c) => c.charCodeAt(0) - "A".charCodeAt(0) + 0x1f1e6
+    )
+  );
+
+  return {
+    label: finalFlag + ' ' + nativeName,
+    href: opt.href,
+  };
+});
 ---
 
 <api-genie-locale-selector>
   <select>
     {
-      options.map((option) => (
-        <option value={option.href} selected={option.href == value}>{option.label}</option>
+      finalOptions.map((option) => (
+        <option value={option.href} selected={option.href == value}>
+          {option.label}
+        </option>
       ))
     }
   </select>
@@ -30,7 +57,10 @@ const { options, value } = Astro.props;
           console.log(event);
           if (event.currentTarget instanceof HTMLSelectElement) {
             try {
-              const url = new URL(event.currentTarget.value, window.location.origin);
+              const url = new URL(
+                event.currentTarget.value,
+                window.location.origin
+              );
               url.hash = window.location.hash;
               window.location.href = url.toString();
             } catch (err) {
