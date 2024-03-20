@@ -5,7 +5,7 @@ export default {
 		extend: {
 			backgroundColor: {
 				sidebar: '#ccc',
-			}
+      }
 		},
 	},
 	plugins: [],

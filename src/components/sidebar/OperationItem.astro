@@ -1,13 +1,110 @@
 ---
 interface Props {
-  summary?: string;
-  method: string;
+  href: string;
   url: string;
+  method:
+    | "get"
+    | "post"
+    | "put"
+    | "delete"
+    | "patch"
+    | "options"
+    | "head"
+    | "trace";
+  summary?: string;
+  layout:
+    | "url-method-summary"
+    | "method-url-summary"
+    | "url-method"
+    | "method-url"
+    | "summary";
 }
 
-const { summary, url } = Astro.props;
+const {
+  href,
+  url,
+  method,
+  summary,
+  layout = "method-url-summary",
+} = Astro.props;
 ---
 
-<div class="text-sm py-1 item">
-  <a href={url}><span>{summary}</span></a>
+<div class="text-sm py-1 item min-w-0">
+  <a href={href} class="inline-block w-full min-w-0">
+    {
+      layout !== "summary" && (
+        <div
+          class:list={[
+            "flex",
+            (layout === "method-url-summary" || layout === "method-url") &&
+              "flex-row-reverse",
+            "justify-between",
+          ]}
+        >
+          <span class="font-mono">{url}</span>
+          {method === "get" && (
+            <span
+              class:list={["uppercase", "bg-[#28a745]", "text-white", "px-1"]}
+            >
+              {method}
+            </span>
+          )}
+          {method === "post" && (
+            <span
+              class:list={["uppercase", "bg-[#007bff]", "text-white", "px-1"]}
+            >
+              {method}
+            </span>
+          )}
+          {method === "put" && (
+            <span
+              class:list={["uppercase", "bg-[#ffc107]", "text-white", "px-1"]}
+            >
+              {method}
+            </span>
+          )}
+          {method === "delete" && (
+            <span
+              class:list={["uppercase", "bg-[#dc3545]", "text-white", "px-1"]}
+            >
+              {method}
+            </span>
+          )}
+          {method === "patch" && (
+            <span
+              class:list={["uppercase", "bg-[#17a2b8]", "text-white", "px-1"]}
+            >
+              {method}
+            </span>
+          )}
+          {method === "options" && (
+            <span
+              class:list={["uppercase", "bg-[#6c757d]", "text-white", "px-1"]}
+            >
+              {method}
+            </span>
+          )}
+          {method === "head" && (
+            <span
+              class:list={["uppercase", "bg-[#6610f2]", "text-white", "px-1"]}
+            >
+              {method}
+            </span>
+          )}
+          {method === "trace" && (
+            <span
+              class:list={["uppercase", "bg-[#6f42c1]", "text-white", "px-1"]}
+            >
+              {method}
+            </span>
+          )}
+        </div>
+      )
+    }
+    {
+      layout !== "url-method" && layout !== "method-url" && (
+        <span>{summary}</span>
+      )
+    }
+  </a>
 </div>
