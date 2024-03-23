@@ -1,0 +1,31 @@
+---
+interface Props {
+  name?: string;
+  url?: string;
+  email?: string;
+}
+
+const { name, url, email } = Astro.props;
+---
+
+<div>
+  <h2>
+    Name: {name}
+  </h2>
+  {
+    url && (
+      <p>
+        <span>URL: </span>
+        <a href={url} target="_blank">{url}</a>
+      </p>
+    )
+  }
+  {
+    email && (
+      <p>
+        <span>Email: </span>
+        <a href={`mailto:${email}`}>{email}</a>
+      </p>
+    )
+  }
+</div>

@@ -8,10 +8,54 @@ const __ = useTranslation(Astro);
   <h2 class="text-3xl">{__("overview.overview")}</h2>
   <div>
     <h3 class="text-lg mb-2"><slot name="title" /> <slot name="version" /></h3>
+    <div>
+      <slot name="description" />
+    </div>
+    <div>
+      <slot name="termsOfService" />
+    </div>
+
+    <h2>Additional Informatio</h2>
+
+    {
+      Astro.slots.has("contact") && (
+        <div>
+          <h3 class="text-lg font-bold mb-2">Contact</h3>
+          <slot name="contact" />
+        </div>
+      )
+    }
+
+    {
+      Astro.slots.has("license") && (
+        <div>
+          <h3 class="text-lg font-bold mb-2">License</h3>
+          <slot name="license" />
+        </div>
+      )
+    }
+
+    {
+      Astro.slots.has("externalDocs") && (
+        <div>
+          <h3 class="text-lg font-bold mb-2">External Documentation</h3>
+          <slot name="externalDocs" />
+        </div>
+      )
+    }
   </div>
-  <div><slot name="description" /></div>
+
   <section>
     <h3 class="text-lg font-bold mb-2">{__("overview.serverList")}</h3>
-    <slot name="server" />
+    <slot name="servers" />
   </section>
+
+  {
+    Astro.slots.has("tags") && (
+      <section>
+        <h3 class="text-lg font-bold mb-2">Tags</h3>
+        <slot name="tags" />
+      </section>
+    )
+  }
 </div>

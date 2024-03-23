@@ -1,0 +1,21 @@
+---
+interface Props {
+  name?: string;
+  identifier?: string;
+  url?: string;
+}
+
+const { name, identifier, url } = Astro.props;
+---
+
+<div>
+  <span>{name}</span>
+  {identifier && <span>{identifier}</span>}
+  {
+    url && (
+      <a href="{url}" target="_blank">
+        Link
+      </a>
+    )
+  }
+</div>
