@@ -7,6 +7,6 @@ const { name } = Astro.props;
 ---
 
 <div>
-  <span>{name}</span>
+  <span class="font-semibold">{name}</span>
   {Astro.slots.has("default") && <slot />}
 </div>

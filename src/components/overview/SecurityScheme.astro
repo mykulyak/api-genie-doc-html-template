@@ -1,0 +1,122 @@
+---
+interface ApiKeyData {
+    type: 'apiKey';
+    name: string;
+    in: 'header' | 'query';
+}
+
+interface HttpData {
+    type: 'http';
+    scheme: 'basic' | 'bearer';
+    bearerFormat?: string;
+}
+
+interface MutualTlsData {
+    type: 'mutualTLS';
+}
+
+interface OAuth2Data {
+    type: 'oauth2';
+    implicitFlow?: {
+        authorizationUrl: string;
+        refreshUrl?: string;
+        scopes?: Record<string, string>;
+    };
+    passwordFlow?: {
+        tokenUrl: string;
+        refreshUrl?: string;
+        scopes?: Record<string, string>;
+    };
+    clientCredentialsFlow?: {
+        tokenUrl: string;
+        refreshUrl?: string;
+        scopes?: Record<string, string>;
+    };
+    authorizationCodeFlow?: {
+        authorizationUrl: string;
+        tokenUrl: string;
+        refreshUrl?: string;
+        scopes?: Record<string, string>;
+    };
+}
+
+interface OpenIdConnectData {
+    type: 'openIdConnect';
+    openIdConnectUrl: string;
+}
+
+interface Props {
+    data: ApiKeyData | HttpData | MutualTlsData | OAuth2Data | OpenIdConnectData;
+}
+
+const { data } = Astro.props;
+---
+
+<div>
+    {data.type == 'apiKey' && (
+        <div>
+            <div>Name: {data.name}</div>
+            <div>In: {data.in}</div>
+        </div>
+    )}
+
+    {data.type == 'http' && (
+        <div>
+            <div>Scheme: {data.scheme}</div>
+            {data.bearerFormat && <div>Bearer Format: {data.bearerFormat}</div>}
+        </div>
+    )}
+
+    {data.type == 'mutualTLS' && (
+        <div>
+            <div>Mutual TLS</div>
+        </div>
+    )}
+
+    {data.type == 'oauth2' && (
+        <div>
+            <div>OAuth2</div>
+            <div>
+                Flows:
+                <ul>
+                    {data.implicitFlow && (
+                        <li>
+                            Implicit:
+                            <div>Authorization URL: {data.implicitFlow.authorizationUrl}</div>
+                            <div>Scopes: {JSON.stringify(data.implicitFlow.scopes)}</div>
+                        </li>
+                    )}
+                    {data.passwordFlow && (
+                        <li>
+                            Password:
+                            <div>Token URL: {data.passwordFlow.tokenUrl}</div>
+                            <div>Scopes: {JSON.stringify(data.passwordFlow.scopes)}</div>
+                        </li>
+                    )}
+                    {data.clientCredentialsFlow && (
+                        <li>
+                            Client Credentials:
+                            <div>Token URL: {data.clientCredentialsFlow.tokenUrl}</div>
+                            <div>Scopes: {JSON.stringify(data.clientCredentialsFlow.scopes)}</div>
+                        </li>
+                    )}
+                    {data.authorizationCodeFlow && (
+                        <li>
+                            Authorization Code:
+                            <div>Authorization URL: {data.authorizationCodeFlow.authorizationUrl}</div>
+                            <div>Token URL: {data.authorizationCodeFlow.tokenUrl}</div>
+                            <div>Scopes: {JSON.stringify(data.authorizationCodeFlow.scopes)}</div>
+                        </li>
+                    )}
+                </ul>
+            </div>
+        </div>
+    )}
+
+    {data.type == 'openIdConnect' && (
+        <div>
+            <div>OpenID Connect</div>
+            <div>OpenID Connect URL: {data.openIdConnectUrl}</div>
+        </div>
+    )}
+</div>

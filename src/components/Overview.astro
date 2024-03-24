@@ -51,6 +51,15 @@ const __ = useTranslation(Astro);
   </section>
 
   {
+    Astro.slots.has("security") && (
+      <section>
+        <h3 class="text-lg font-bold mb-2">Security</h3>
+        <slot name="security" />
+      </section>
+    )
+  }
+
+  {
     Astro.slots.has("tags") && (
       <section>
         <h3 class="text-lg font-bold mb-2">Tags</h3>
