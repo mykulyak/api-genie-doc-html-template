@@ -123,9 +123,7 @@ const __ = useTranslation(Astro);
       const allowedMethods = new Set(formData.getAll("method"));
       const queryString = (formData.get("url") as string).toLowerCase();
 
-      const nodes = form
-        .closest("[data-search-root]")
-        ?.querySelectorAll("tbody tr[data-search-method]");
+      const nodes = document.querySelector("[data-search-root]")?.querySelectorAll("tbody tr[data-search-method]");
 
       if (allowedMethods.size || queryString.length > 3) {
         nodes?.forEach((rowElem) => {
