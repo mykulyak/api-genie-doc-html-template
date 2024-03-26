@@ -14,20 +14,28 @@ import { Code } from "astro:components";
 interface Props {
   language?: BuiltinLanguage | SpecialLanguage | LanguageRegistration;
   theme?: BuiltinTheme | ThemeRegistration | ThemeRegistrationRaw;
+  code: string;
   generated?: boolean;
 }
 
-const { language = "plaintext", theme = "github-dark", generated } = Astro.props;
+const {
+  language = "plaintext",
+  theme = "github-dark",
+  code,
+  generated,
+} = Astro.props;
 
 const highligher = await getHighlighter({ themes: [theme], langs: [language] });
 const bgColor = highligher.getTheme(theme).bg;
-const rawCode = await Astro.slots.render("default");
-const code = (rawCode || '').replaceAll('&lcub;', '{').replaceAll('&rcub;', '}');
+
+const unescapedCode = code
+  .replace(/&lt;/g, "<")
+  .replace(/&gt;/g, ">")
+  .replace(/&amp;/g, "&")
+  .replace(/&quot;/g, '"');
 ---
 
 <div class="p-2 text-xs relative" style={`background-color: ${bgColor}`}>
-  {generated && (
-    <div class="absolute top-2 right-2">🤖</div>
-  )}
-  <Code code={code} lang={language} theme={theme} />
+  {generated && <div class="absolute top-2 right-2">🤖</div>}
+  <Code code={unescapedCode} lang={language} theme={theme} />
 </div>
