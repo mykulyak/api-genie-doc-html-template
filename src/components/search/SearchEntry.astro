@@ -1,0 +1,17 @@
+---
+interface Props {
+    type: 'operation' | 'resource';
+    method?: string;
+    url?: string;
+    href?: string;
+    summary?: string;
+};
+
+const { method, url, href, summary } = Astro.props;
+---
+
+<tr data-search-method={method}>
+    <td>{method}</td>
+    <td>{url}</td>
+    <td><a href={href} class="underline">{summary}</a></td>
+</tr>

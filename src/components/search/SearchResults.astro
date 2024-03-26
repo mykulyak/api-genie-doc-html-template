@@ -1,0 +1,20 @@
+---
+import { useTranslation } from "../../i18n";
+
+const __ = useTranslation(Astro);
+---
+
+<div data-search-root>
+  <table>
+    <thead>
+      <tr>
+        <th>{__("searchResults.headers.method")}</th>
+        <th>{__("searchResults.headers.path")}</th>
+        <th>{__("searchResults.headers.summary")}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <slot />
+    </tbody>
+  </table>
+</div>
