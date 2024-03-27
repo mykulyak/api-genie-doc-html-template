@@ -1,7 +1,29 @@
 ---
-interface Props {};
+interface Props {
+  variant?: "inherit" | "none" | "custom";
+}
+
+const { variant } = Astro.props;
 ---
 
 <div>
-    This block displays security requirements of a single operation.
+  {
+    variant === "inherit" && (
+      <div>
+        This block inherits the security requirements from the parent component.
+      </div>
+    )
+  }
+  {
+    variant === "none" && (
+      <div>This block does not have any security requirements.</div>
+    )
+  }
+  {
+    variant === "custom" && (
+      <div>
+        <slot />
+      </div>
+    )
+  }
 </div>
