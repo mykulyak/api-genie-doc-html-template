@@ -25,6 +25,7 @@
     "kvpair.example": "Приклад",
     "resource.sections.usage": "Використовується в операціях",
     "responseExample.header": "Приклади відповіді",
+    "responseSchema.header": "Схема відповіді",
     "searchForm.method.label": "Метод",
     "searchForm.get.label": "GET",
     "searchForm.post.label": "POST",

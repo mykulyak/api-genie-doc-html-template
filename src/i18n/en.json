@@ -25,6 +25,7 @@
     "kvpair.example": "Example",
     "resource.sections.usage": "Used in operations",
     "responseExample.header": "Response examples",
+    "responseSchema.header": "Response schema",
     "searchForm.method.label": "Method",
     "searchForm.get.label": "GET",
     "searchForm.post.label": "POST",
